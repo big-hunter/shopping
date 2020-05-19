@@ -47,7 +47,7 @@ $.ajaxSetup({
             data:JSON.stringify(data),
             success : function(data){
                 console.log(data)
-                window.location.href = "/"
+                window.location.href = "/?username="+data.username
             },
             error: function(){
                 alert("登陆失败")

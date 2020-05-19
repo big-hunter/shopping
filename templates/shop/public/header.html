@@ -40,7 +40,12 @@
         |
         <li> <a href="#">关于我们</a></li>
         |
-        <li> <a href="/login" target="_blank">登录</a></li>
+        <li>
+          {%if user == None%}
+          <a href="/login" target="_blank">登录</a></li>
+          {% else %}
+           <a href="#">{{ user.username }}</a></li>
+          {% endif %}
         |
         <li> <a href="/register" target="_blank">注册</a></li>
       </ul>
