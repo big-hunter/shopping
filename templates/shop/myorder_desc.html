@@ -1,0 +1,93 @@
+{% extends 'home/public/base.html' %}
+{% block link %}
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/order.css">
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/order-app.css">
+{% endblock %}
+{% block con %}
+ <!-- 主内容区域 -->
+    <div class="mainbody order">
+		<div class="container">
+			
+			<br>
+			<br>
+			<br>
+			<br>
+			<h3>详情查看：</h3>
+			<br>
+			<br>
+
+				<div class="panel panel-info">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">商品详情</h3>
+				  </div>
+				  <div class="panel-body">
+				    <div class="row">
+				    	<div class="col-md-1">商品图片</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1">商品标题</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1">商品单价</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1">商品数量</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1">商品总价</div>
+				    </div>
+				    
+				    {% for x in date.orderinfo_set.all %}
+				    <hr>
+			       <div class="row">
+				    	<div class="col-md-1" style="height: 100px;line-height: 100px">
+				    		<img src="{{ x.gid.picname }}" style="width: 80px;height: 80px;">
+				    	</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1" style="height: 100px;line-height: 100px">{{ x.gid.gname }}</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1" style="height: 100px;line-height: 100px">￥{{ x.gid.price }}</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1" style="height: 100px;line-height: 100px">x {{ x.num }}</div>
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-1" style="height: 100px;line-height: 100px">￥{{ date.totalprice }}</div>
+				    </div>
+				    {% endfor %}
+				  </div>
+				</div>
+
+
+				<div class="panel panel-primary">
+				  <div class="panel-heading">收件详情</div>
+				  <div class="panel-body">
+				  	收件人： {{ date.aid.name }}
+				  	<hr>
+				  	联系电话： {{ date.aid.phone }}
+				  	<hr>
+				    联系地址： {{ date.aid.addres }}
+				  </div>
+				</div>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">其他信息</h3>
+				  </div>
+				  <div class="panel-body">
+				    订单编号： {{ date.id }}
+				    <hr>
+				    订单状态：{% if date.status == 1 %} 未支付
+				    {% elif date.status == 2 %} 待发货
+				    {% elif date.status == 3 %} 已发货
+				    {% elif date.status == 4 %} 已完成
+				    {% elif date.status == 5 %} 已取消
+				    {% endif %}
+				    <hr>
+				    订单创建时间：{{ date.addtime|date:"Y-m-d H:d:s" }}
+				  </div>
+				</div>
+			</div>
+		</div>	
+	</div>
+    <!-- 主内容区域 E-->
+{% endblock %}

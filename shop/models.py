@@ -73,3 +73,30 @@ class Goods(models.Model):
     num = models.IntegerField(default=0)  # 购买次数
     addtime = models.DateTimeField(auto_now_add=True)
 
+
+# 接货地址
+class address(models.Model):
+    uid = models.ForeignKey(to="User", to_field="user_id", on_delete=models.CASCADE)
+    name = models.CharField(max_length=60)
+    phone = models.CharField(max_length=30)
+    status = models.IntegerField(default=0)
+    addres = models.CharField(max_length=255)
+    addtime = models.DateTimeField(auto_now_add=True)
+
+
+class Order(models.Model):
+    uid = models.ForeignKey('User', to_field="user_id", on_delete=models.CASCADE)
+    aid = models.ForeignKey('address', to_field='id', on_delete=models.CASCADE)
+    totalprice = models.FloatField()
+    totalnum = models.IntegerField()
+    # 1 未付款 2已付款,待发货,3已发货,待收货,4已完成,5已取消
+    status = models.IntegerField()
+    addtime = models.DateTimeField(auto_now_add=True)
+
+
+# 订单详情
+class OrderInfo(models.Model):
+    orderid = models.ForeignKey('Order', to_field="id", on_delete=models.CASCADE)
+    gid = models.ForeignKey('goods', to_field="id", on_delete=models.CASCADE)
+    num = models.IntegerField()
+    price = models.FloatField()

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>shopping首页</title>
+<link href="/static/shop/css/shopping.css" rel='stylesheet' type='text/css' />
+<link href="/static/shop/css/shoplist.css" rel='stylesheet' type='text/css' />
+<link rel="start icon" href="/static/shop/images/resize_png_new.png"  >
+{% block link %}
+
+{% endblock %}
+<script type="text/javascript"  src="/static/shop/script/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/static/shop/script/js.js"></script>
+</head>
+
+<body>
+  {% block header %}
+<!-----start header logo------->
+  <div class="header1">
+    <div id="logo"><a href="index.html"> <img src="/static/shop/images/logo.png" alt="折扣店logo"  title="折扣社"/> </a></div>
+    <div class="search">
+      <form action="#" method="post" id="sitesearch">
+        <fieldset>
+          <input type="text" value="搜索一下" onfocus="this.value=(this.value=='搜索一下)? '' : this.value ;" />
+          <input type="image" src="/static/shop/images/search.png" id="search" alt="搜索一下" />
+        </fieldset>
+      </form>
+    </div>
+    <div class="icon1"> <a href=""><img  class="img1" src="/static/shop/images/love.png"  title="收藏"/> </a> </div>
+    <div class="icon2"><a href=""> <img  class="img1"  src="/static/shop/images/bag.png" title="购物车" /> </a> </div>
+    <div class="icon3"> <a  class="register_user" href="/register" target="_blank">注册账户&gt;</a> </div>
+  </div>
+  <div class="top1">
+    <div class="top-left">
+      <p> <a href="/goodslist" target="_blank">购物五折啦</a></p>
+    </div>
+    <div class="top-right">
+      <ul>
+        <li> <a href="#">最近浏览</a></li>
+        |
+        <li> <a href="#">关于我们</a></li>
+        |
+        <li> <a href="/login" target="_blank">登录</a></li>
+        |
+        <li> <a href="/register" target="_blank">注册</a></li>
+      </ul>
+    </div>
+  </div>
+  <!-----end header logo------->
+
+  <!-------- start header menu--------->
+  <div class="header-menu">
+    <ul>
+      <li><a class="a1" href="">首页</a> </li>
+      <li>
+        <a class="a2" href="">今日最新</a>
+        <ul>
+          <li><a href="">精选女装</a></li>
+          <li><a href="">秋装外套</a></li>
+          <li><a href="">温暖毛衣</a></li>
+          <li><a href="">毛呢外套</a></li>
+          <li><a href="">秋冬外套</a></li>
+          <li><a href="">长袖衬衫</a></li>
+          <li><a href="">卫衣</a></li>
+        </ul>
+      </li>
+      <li>
+        <a class="a3" href="">女装</a>
+        <ul>
+          <li><a href="/goodslist?type=6">秋款风衣</a></li>
+          <li><a href="/goodslist?type=7">机车皮衣</a></li>
+          <li><a href="/goodslist?type=8">秋款连衣裙</a></li>
+          <li><a href="/goodslist?type=9">休闲裤</a></li>
+          <li><a href="/goodslist?type=10">打底裤</a></li>
+        </ul>
+      </li>
+      <li><a class="a4" href="">男装</a>
+        <ul>
+          <li><a href="/goodslist?type=11">个性潮男</a></li>
+          <li><a href="/goodslist?type=12">时尚休闲</a></li>
+          <li><a href="/goodslist?type=13">商务绅士</a></li>
+          <li><a href="/goodslist?type=14">休闲衬衫</a></li>
+          <li><a href="/goodslist?type=15">西服套装</a></li>
+          <li><a href="/goodslist?type=16">直筒西裤</a></li>
+        </ul>
+      </li>
+      <li><a class="a5" href="">儿童服饰</a>
+        <ul>
+          <li><a href="/goodslist?type=17">毛衣|针织衫</a></li>
+          <li><a href="/goodslist?type=18">儿童男装</a></li>
+          <li><a href="/goodslist?type=19">儿童女装</a></li>
+          <li><a href="/goodslist?type=20">表演服饰</a></li>
+          <li><a href="/goodslist?type=21">亲子装</a></li>
+          <li><a href="/goodslist?type=22">休闲套装</a></li>
+        </ul>
+      </li>
+      <li><a class="a6" href="">男包|女包</a>
+        <ul>
+          <li><a href="/goodslist?type= 28">秋新款</a></li>
+          <li><a href="/goodslist?type= 29">单肩包</a></li>
+          <li><a href="/goodslist?type= 30">斜挎包</a></li>
+          <li><a href="/goodslist?type= 31">手提包</a></li>
+          <li><a href="/goodslist?type= 32">大牌包</a></li>
+        </ul>
+      </li>
+      <li><a class="a7" href="">潮流前线</a>
+        <ul>
+          <li><a href="/goodslist?type=33">珠宝首饰</a></li>
+          <li><a href="/goodslist?type=34">时尚饰品</a></li>
+          <li><a href="/goodslist?type=35">品质手表</a></li>
+          <li><a href="/goodslist?type=36">眼镜配饰</a></li>
+          <li><a href="/goodslist?type=37">男人饰品</a></li>
+          <li><a href="/goodslist?type=38">原创饰品</a></li>
+        </ul>
+      </li>
+      <li><a class="a8" href="">大牌领先看</a>
+        <ul>
+          <li> <a href="/goodslist?brand=1 ">CHANEL</a></li>
+          <li> <a href="/goodslist?brand=2 ">PARADA</a></li>
+          <li> <a href="/goodslist?brand=3">GUCCI</a></li>
+          <li> <a href="/goodslist?brand=4">HERMES</a></li>
+          <li> <a href="/goodslist?brand=5">Armani</a></li>
+          <li> <a href="/goodslist?brand=6">Versace</a></li>
+        </ul>
+      </li>
+      <li><a class="a9" href="">今日折扣</a>
+        <ul>
+          <li><a href="/goodslist?brand=1&disccout=0.8"> 香奈儿8折</a></li>
+          <li><a href="goodslist?brand=2&disccout=0.7"> 普拉达7折</a></li>
+          <li> <a href="goodslist?brand=3&disccout=0.5"> 古驰5折</a></li>
+          <li> <a href="goodslist?brand=4&disccout=0.9">爱马仕9折</a></li>
+          <li><a href="goodslist?brand=5&disccout=0.8"> 阿玛尼8折</a></li>
+          <li> <a href="goodslist?brand=6&disccout=0.9">范思哲9折</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+<!--------end header menu--------->
+  {% endblock %}
+ {% block content %}
+
+
+  {% endblock %}
+</body>
+</html>

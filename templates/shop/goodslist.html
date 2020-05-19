@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% extends 'shop/public/header.html' %}
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>商品列表</title>
@@ -7,138 +6,9 @@
 <link href="/static/shop/css/shoplist.css" rel='stylesheet' type='text/css' />
 <link rel="start icon" href="images/resize_png_new.png"  >
 </head>
-<body>
-<!------header top------->
-<div class="top1">
-  <div class="top-left">
-    <p> <a href="goodslist.html" target="_blank">购物五折啦</a></p>
-  </div>
-  <div class="top-middle">
-    <marquee id="move">
-    欢迎下载折扣店APP,折扣店随时随地带你购物！
-    </marquee>
-  </div>
-  <div class="top-right">
-    <ul>
-      <li> <a href="#">最近浏览</a></li>
-      |
-      <li> <a href="#">关于我们</a></li>
-      | <li> <a href="login_user.html" target="_blank">登录</a></li>
-      |
-      <li> <a href="register.html" target="_blank">注册</a></li>
-    </ul>
-  </div>
-</div>
-<!------header top------->
-<div class="header1">
-  <div id="logo"> <a title="折扣社" href="/"><img src="/static/shop/images/logo.png" alt="折扣店logo" /></a> </div>
-  <div class="search">
-    <form action="#" method="post" id="sitesearch">
-      <fieldset>
-        <input type="text" value="搜索一下" onfocus="this.value=(this.value=='搜索一下)? '' : this.value ;" />
-        <!--<input type="image" src="images/search.png" id="search" alt="搜索一下" />-->
-      </fieldset>
-    </form>
-  </div>
-  
-  <div class="icon1"> <a href=""><img  class="img1" src="/static/shop/images/love.png"  title="收藏"/> </a> </div>
-  <div class="icon2"><a href=""> <img  class="img1"  src="/static/shop/images/bag.png" title="购物车" /> </a> </div>
-  <div class="icon3"> <a  class="register_user" href="register.html" target="_blank">注册账户&gt;</a> </div>
-</div>
-
-<!------header top-------> 
-
-<!--------header menu--------->
-<div class="header-menu">
-  <ul>
-    <li><a class="a1" href="">首页</a> </li>
-    <li><a class="a2" href="">今日最新</a> 
-      <ul>
-        <li><a href="">精选女装</a></li>
-        <li><a href="">秋装外套</a></li>
-        <li><a href="">温暖毛衣</a></li>
-        <li><a href="">毛呢外套</a></li>
-        <li><a href="">秋冬外套</a></li>
-        <li><a href="">长袖衬衫</a></li>
-      </ul>
-      </li>
-    <li><a class="a3" href="">女装</a>
-      <ul>
-        <li><a href="">秋款风衣</a></li>
-        <li><a href="">机车皮衣</a></li>
-        <li><a href="">秋款连衣裙</a></li>
-        <li><a href="">小脚裤</a></li>
-        <li><a href="">休闲裤</a></li>
-        <li><a href="">打底裤</a></li>
-      </ul>
-       </li>
-    <li><a class="a4" href="">男装</a>
-      <ul>
-        <li><a href="">个性潮男</a></li>
-        <li><a href="">时尚休闲</a></li>
-        <li><a href="">商务绅士</a></li>
-        <li><a href="">休闲衬衫</a></li>
-        <li><a href="">西服套装</a></li>
-        <li><a href="">直筒西裤</a></li>
-      </ul>
-    </li>
-    <li><a class="a5" href="">儿童服饰</a>
-      <ul>
-        <li><a href="">毛衣|针织衫</a></li>
-        <li><a href="">儿童男装</a></li>
-        <li><a href="">儿童女装</a></li>
-        <li><a href="">表演服饰</a></li>
-        <li><a href="">亲子装</a></li>
-        <li><a href="">休闲套装</a></li>
-      </ul>
-    </li>
-    <li><a class="a6" href="">男包|女包</a>
-      <ul>
-        <li><a href="">秋新款</a></li>
-        <li><a href="">单肩包</a></li>
-        <li><a href="">斜挎包</a></li>
-        <li><a href="">手提包</a></li>
-        <li><a href="">大牌包</a></li>
-        <li><a href="">钱包</a></li>
-      </ul>
-    </li>
-    <li><a class="a7" href="">潮流前线</a>
-      <ul>
-        <li><a href="">珠宝首饰</a></li>
-        <li><a href="">时尚饰品</a></li>
-        <li><a href="">品质手表</a></li>
-        <li><a href="">眼镜配饰</a></li>
-        <li><a href="">男人饰品</a></li>
-        <li><a href="">原创饰品</a></li>
-      </ul>
-    </li>
-    <li><a class="a8" href="">大牌领先看</a>
-      <ul>
-        <li><a href=""> CHANEL</a></li>
-        <li><a href=""> PARADA</a></li>
-        <li> <a href=""> GUCCI</a></li>
-        <li> <a href=""> HERMES</a></li>
-        <li><a href=""> Armani</a></li>
-        <li> <a href=""> Versace</a></li>
-      </ul>
-    </li>
-    <li><a class="a9" href="">今日折扣</a>
-      <ul>
-        <li><a href=""> 香奈儿8折</a></li>
-        <li><a href=""> 普拉达7折</a></li>
-        <li> <a href=""> 古驰5折</a></li>
-        <li> <a href="">爱马仕9折</a></li>
-        <li><a href=""> 阿玛尼8折</a></li>
-        <li> <a href="">范思哲9折</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
 
 <hr />
-
-<!--------header menu---------> 
-
+ {% block content %}
 <!--------content1--------->
 <div class="menu">
   <div class="menu-left">
@@ -332,7 +202,6 @@
   </div>
 </div>
 
-<br/><br/><br/><br/><br/><br/><br/>
-  {% include 'shop/public/footer.html' %}
-</body>
-</html>
+<br/><br/><br/><br/><br/>
+{% include 'shop/public/footer.html' %}
+{% endblock %}

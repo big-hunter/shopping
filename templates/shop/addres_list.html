@@ -1,0 +1,99 @@
+{% extends 'home/public/header.html' %}
+{% block con %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="row">
+	<div class="col-md-8 col-md-offset-1">
+		<h3>收货地址管理:</h3>
+	</div>
+	<div class="col-md-1">
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+			  添加地址+
+		</button>
+	</div>
+</div>
+<br>
+<div class="row" style="margin-bottom: 50px;">
+	<div class="col-md-8 col-md-offset-2 " style="box-sizing: border-box;padding: 70px 30px 20px 60px; border: 1px dashed ">
+	{% for x in date %}
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		  	&nbsp;&nbsp;
+		    <h3 class="panel-title" style="float: left">收件人：{{ x.name }}</h3>
+		    <button type="button" class="btn btn-default  btn-xs clo" id={{ x.id }} style="float: right;">
+			  <span class="glyphicon glyphicon-remove " aria-hidden="true"></span> 
+			</button>
+		    <a class="panel-title" style="float:right;margin-right:10px;" href="{% url 'addres_edit' %}?id={{ x.id }}">编辑</a>
+
+		  </div>
+		  <div class="panel-body">
+		     &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp; 联系电话：{{ x.phone }}
+		    <hr>
+		      &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp; 联系地址：{{ x.addres }}
+		  </div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+<!-- 模态框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">地址添加：</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" method="get" action="{% url 'addres_add' %}">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">收件人：</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control"  name="name">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		  	<label for="inputPassword3" class="col-sm-2 control-label">手机号：</label>
+		  	<div class="col-sm-10">
+		     <input type="text" class="form-control" name="phone">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">收件地址：</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" name="addres">
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox" name="status" value="1"> 是否设为默认地址
+		        </label>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button  class="btn btn-primary">保存</button>
+	      </div>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	$(".clo").click(function(){
+		a = $(this)
+		id = $(this).attr("id")
+		alert("你确认要删除吗？")
+		$.post("{% url 'addres_list' %}",{"id":id,"csrfmiddlewaretoken":"{{ csrf_token }}"},function(date){
+				a.parents(".panel-default").remove()
+		})
+	})
+</script>
+{% endblock %}

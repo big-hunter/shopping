@@ -1,0 +1,230 @@
+{% extends 'home/public/header.html' %}
+{% block link %}
+	<link rel="stylesheet" type="text/css" href="/static/public/css/cart.css">
+	<link rel="stylesheet" type="text/css" href="/static/public/css/cart-app.css">
+{% endblock %}
+{% block con %}
+<body class="cart-app">
+    <!-- 导航 -->
+    <div class="layout-header" id="scroll-wrap">
+		<nav class="navbar navbar-default header hidden-xs hidden-sm">
+			<div class="container clearfix">
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<div class="layout-header-logo navbar-left">
+						<a target="_blank" href="./index.html" class="layout-header-logo-link">
+							<img src="/static/home//img/logo.png">
+						</a>
+					</div>
+					<div class="navbar-left">
+						<ol class="breadcrumb">
+							<li >租物</li>
+							<li class="active">确认订单</li>
+							<li>在线支付</li>
+							<li>完成 </li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</nav>
+    </div>
+    <!-- 导航 E-->
+    <br>
+	<div class="row">
+		<div class="col-md-1 col-md-offset-2" >
+			<h4>收货地址：</h4>
+		</div>
+		<div class="col-md-1 col-md-offset-6">
+			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+			  添加地址+
+			</button>
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">地址添加：</h4>
+			      </div>
+			      <div class="modal-body">
+			        <form class="form-horizontal" method="get" action="{% url 'addres_add' %}">
+					  <div class="form-group">
+					    <label for="inputEmail3" class="col-sm-2 control-label">收件人</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control"  name="name">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					  	<label for="inputPassword3" class="col-sm-2 control-label">手机号</label>
+					  	<div class="col-sm-10">
+					     <input type="text" class="form-control" name="phone">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="inputPassword3" class="col-sm-2 control-label">收件地址</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control" name="addres">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <div class="col-sm-offset-2 col-sm-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" name="status" value="1"> 是否设为默认地址
+					        </label>
+					      </div>
+					    </div>
+					  </div>
+					  <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				        <button  class="btn btn-primary">保存</button>
+				      </div>
+					</form>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>	
+
+    <div class="row">
+    	<div class="col-md-9 col-md-offset-2 ">
+    		{% for x in date %}
+    		{% if x.status == 1 %}
+    		<div class="col-md-3 addres" aid="{{ x.id }}" status="{{ x.status }}" style="border: 2px solid red;margin-left: 5px;box-sizing: border-box;">
+    		{% else %}
+    		<div class="col-md-3 addres" aid="{{ x.id }}" status="{{ x.status }}" style="border: 2px solid blue;margin-left: 5px;box-sizing: border-box;">
+    		{% endif %}
+    			<address>
+				  姓名：<strong>{{ x.name }}</strong><br>
+				  地址：{{ x.addres }}<br>
+				  联系电话： {{ x.phone }}
+				</address>
+    		</div>
+
+    		{% endfor %}
+
+    	</div>
+    </div>
+    <hr>
+    <div class="row">
+		<div class="col-md-1 col-md-offset-2" >
+			<h4>订单确认：</h4>
+
+		</div>
+	</div>	
+    <!-- 主内容区域 -->
+    <div class="mainbody cart">
+		<div class="container">
+			<!-- 购物车详情头 -->
+			<table class="cart-header">
+				<tbody>
+					<tr>
+						<td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
+						</td>
+						<td class="cart-col-name col-md-3 hidden-xs hidden-sm">商品</td>
+						<td class="cart-col-price col-md-2 hidden-xs hidden-sm">单价(元)</td>
+						<td class="cart-col-number col-md-2 hidden-xs hidden-sm">数量</td>
+						<td class="cart-col-total col-md-1 hidden-xs hidden-sm">小计(元)</td>
+					</tr>
+				</tbody>
+			</table><!-- 购物车详情头 E-->
+			
+			<!-- 订单信息确认列表 -->
+			<div class="cart-merchant-list">
+				<div class="cart-merchant">
+					<table class="cart-merchant-body">
+						<tbody>
+						{% for x in res %}
+						
+							<tr class="cart-product" id="pro5">
+								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									
+										<img src="{{ x.picname }}" class="cart-product-img" alt="魅蓝 X" style="width: 150px;height: 150px;">
+									</a>
+								</td>
+								<td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									  <p>{{ x.gname }}</p>
+									</a>
+								</td>
+								<td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+									<p>
+										<span class="cart-product-price">{{ x.price }}</span>
+									</p>
+								</td>
+								<td class="cart-col-number col-md-2 hidden-xs hidden-sm">
+									<p>
+										<span class="cart-product-num">x {{ x.num }}</span>
+									</p>
+								</td>
+								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
+
+									<span class="cart-product-price total">{%  widthratio x.price 1 x.num %}.00</span>
+								</td>							
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div><!-- 购物清单信息列表 E-->
+		</div>
+		<!-- 结算详情 -->
+		<div class="cart-footer" id="cartFooter">
+			<div class="container">
+			   <div class="cart-footer-left col-md-6 col-xs-4 col-sm-4">
+				  
+				   <!-- <span class="cart-remove-selected" id="removeSelected">删除选中的商品</span> -->
+				   <span class="cart-footer-count">
+						共
+						<span class="cart-footer-num" id="totalCount"></span>
+						件商品
+				   </span>
+				</div>
+				<div iv class="cart-footer-right col-md-4 col-md-offset-1 col-sm-offset-2 col-xs-8 col-sm-6">
+					<span class="cart-footer-sum">
+						<span class="cart-footer-text">已优惠</span>
+						<span class="cart-footer-num red" id="totalDiscount">0.00</span>
+						<span class="cart-footer-text">元， 合计(不含运费)：</span>
+						<span class="cart-footer-total" id="totalPrice"></span>
+					</span>
+					
+				</div>
+				<div class="col-md-1"><form id="ads" method="post" >
+						{% csrf_token %}
+							<input type="hidden" name="aid" value="">
+							<button  class="mz-btn success" id="cartSubmit" style="height: 18px">结算</button>
+						</form></div>
+			</div>
+		</div><!-- 结算详情 E-->
+	</div>
+    <!-- 主内容区域 E-->
+	<script type="text/javascript">
+		$('.addres').click(function(){
+			$(this).css({"border": "2px solid red","margin-left": "5px","box-sizing":"border-box"}).siblings().css({"border": "2px solid blue","margin-left": "5px","box-sizing":"border-box"})
+			$(this).attr("status","1").siblings().attr("status","0");
+			for(i=0;i<$(".addres").length;i++){
+			// alert($(".addres").eq(i).attr("status"))
+			if($(".addres").eq(i).attr("status")=="1"){
+				// alert($(this).attr("status"))
+				$("input[name=aid]").val($(".addres").eq(i).attr("aid"))
+				
+			}
+		}
+		})
+		// alert("$(".addres").attr("aid")")
+		for(i=0;i<$(".addres").length;i++){
+			// alert($(".addres").eq(i).attr("status"))
+			if($(".addres").eq(i).attr("status")=="1"){
+				// alert($(this).attr("status"))
+				$("input[name=aid]").val($(".addres").eq(i).attr("aid"))
+			}
+		}
+		$("#ads").submit(function(){
+			if($("input[name=aid]").val()==""){
+				alert("收货地址不能为空，请添加收货地址！")
+			}
+			    
+		})
+	</script>
+</body>
+{% endblock %}
