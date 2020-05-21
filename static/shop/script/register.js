@@ -1,4 +1,3 @@
-/*my own shop 折扣店 sep.27*/
 $(function(){
 
 function getCookie(name) {

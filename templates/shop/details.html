@@ -5,7 +5,7 @@
 <title>商品细节</title>
 <link href="/static/shop/css/details.css" rel='stylesheet' type='text/css' />
 <link href="/static/shop/css/shopping.css" rel='stylesheet' type='text/css' />
-<link href="/static/shop/script/details.js" rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="/static/shop/script/detail.js"></script>
 <link rel="start icon" href="/static/shop/images/resize_png_new.png"  >
 </head>
 
@@ -33,28 +33,29 @@
       <div class="menu-a4">
         <form>
           <h4>选择你的尺码：</h4>
-          <input type="checkbox" name="尺码" value="color 1" />
+          <input group ="size" type="radio" name="尺码" value="XS" />
           XS[155]
-          <input type="checkbox" name="尺码" value="color2" />
+          <input group ="size" type="radio" name="尺码" value="S" />
           S[160]&nbsp;&nbsp;
-          <input type="checkbox" name="尺码" value="color3" />
+          <input group ="size" type="radio" name="尺码" value="M" />
           M[165]
-          <input type="checkbox" name="尺码" value="color4" />
+          <input group ="size" type="radio"  name="尺码"  value="L" />
           &nbsp;
           L[170]</br>
           &nbsp; </br>
-          <input type="checkbox" name="尺码" value="color5" />
+          <input tgroup ="size" type="radio" name="尺码"  value="XL" />
           XL[175]
-          <input type="checkbox" name="尺码" value="color6" />
+          <input group ="size" type="radio" name="尺码"  value="XXL" />
           XXL[180]
-          <input type="checkbox" name="尺码" value="color6" />
+          <input group ="size" type="radio" name="尺码"   value="XXXL" />
           XXXL[185]
         </form>
-        <br />
         <input id = 'productId' type="text" value={{detail.id}} style="display:none">
       </div>
       <div class="menu-a5">
-       <button id ="J_btnAddCart" >加入购物车</button>
+        <button id ="J_btnAddCart" >加入购物车</button>
+      </div>
+      <div class="menu-a5"  style="margin-top: 8px;">
         <a href="/cart/delall?{{detail.id}}">立刻购买</a>
       </div>
     </div>
@@ -146,7 +147,7 @@
         </div>
       </div>
       <div class="menu-D">
-        <div     class="b"> 商品细节 </div>
+        <div class="b"> 商品细节 </div>
         <div class="c1"><img src="/static/shop/images/pic3.jpg" width="160px" height="180px"></div>
         <div class="c2">女神的新衣 Nana林珍娜伊芙丽2014冬装新款大衣<br />
           <br />
@@ -176,9 +177,10 @@
         </div>
       </div>
     </div>
-{% endblock %}
-
+ </div>
+</div>
   {% include "shop/public/footer.html" %}
   <div class="footer2">
     <p>Copyright &copy; 2014.Company<i> hill may </i> All rights reserved.</p>
   </div>
+{% endblock %}
