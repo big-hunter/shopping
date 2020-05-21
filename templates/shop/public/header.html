@@ -3,19 +3,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>shopping首页</title>
+<link href="/static/shop/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="/static/shop/css/shopping.css" rel='stylesheet' type='text/css' />
 <link href="/static/shop/css/shoplist.css" rel='stylesheet' type='text/css' />
 <link rel="start icon" href="/static/shop/images/resize_png_new.png"  >
 {% block link %}
 
 {% endblock %}
-<script type="text/javascript"  src="/static/shop/script/jquery-1.4.2.min.js"></script>
+<script type="text/javascript"  src="/static/shop/script/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="/static/shop/script/js.js"></script>
+<script type="text/javascript" src="/static/shop/script/bootstrap.min.js"></script>
 </head>
-
 <body>
-  {% block header %}
-<!-----start header logo------->
+
+<div>
   <div class="header1">
     <div id="logo"><a href="index.html"> <img src="/static/shop/images/logo.png" alt="折扣店logo"  title="折扣社"/> </a></div>
     <div class="search">
@@ -51,12 +52,10 @@
       </ul>
     </div>
   </div>
-  <!-----end header logo------->
 
-  <!-------- start header menu--------->
   <div class="header-menu">
     <ul>
-      <li><a class="a1" href="">首页</a> </li>
+      <li><a class="a1" href="/">首页</a> </li>
       <li>
         <a class="a2" href="">今日最新</a>
         <ul>
@@ -131,21 +130,20 @@
       <li><a class="a9" href="">今日折扣</a>
         <ul>
           <li><a href="/goodslist?brand=1&disccout=0.8"> 香奈儿8折</a></li>
-          <li><a href="goodslist?brand=2&disccout=0.7"> 普拉达7折</a></li>
-          <li> <a href="goodslist?brand=3&disccout=0.5"> 古驰5折</a></li>
-          <li> <a href="goodslist?brand=4&disccout=0.9">爱马仕9折</a></li>
-          <li><a href="goodslist?brand=5&disccout=0.8"> 阿玛尼8折</a></li>
-          <li> <a href="goodslist?brand=6&disccout=0.9">范思哲9折</a></li>
+          <li><a href="/goodslist?brand=2&disccout=0.7"> 普拉达7折</a></li>
+          <li> <a href="/goodslist?brand=3&disccout=0.5"> 古驰5折</a></li>
+          <li> <a href="/goodslist?brand=4&disccout=0.9">爱马仕9折</a></li>
+          <li><a href="/goodslist?brand=5&disccout=0.8"> 阿玛尼8折</a></li>
+          <li> <a href="/goodslist?brand=6&disccout=0.9">范思哲9折</a></li>
         </ul>
       </li>
     </ul>
   </div>
-
-<!--------end header menu--------->
-  {% endblock %}
- {% block content %}
+   {% block content %}
 
 
   {% endblock %}
+</div>
+
 </body>
 </html>

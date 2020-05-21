@@ -61,6 +61,7 @@ INSERT INTO `shopping`.`shop_goods` (`id`, `good_type`, `gname`, `descr`, `price
 INSERT INTO `shopping`.`shop_goods` (`id`, `good_type`, `gname`, `descr`, `price`, `pic_path`, `brand`, `state`, `discount`, `color`, `tag`, `store`, `num`, `addtime`, `popular`) VALUES ('4', '1', '全家款', '特价销售', '200', '/static/shop/images/banner_04.jpg', 'PARDA', '1', '1', 'red', '全家款|衬衫', '200', '200', '2020-05-14 16:36:46.740147', '100');
 INSERT INTO `shopping`.`shop_goods` (`id`, `good_type`, `gname`, `descr`, `price`, `pic_path`, `brand`, `state`, `discount`, `color`, `tag`, `store`, `num`, `addtime`, `popular`) VALUES ('5', '5', '流行女包', '特价销售', '200', '/static/shop/images/banner_05.jpg', 'PARDA', '1', '1', 'red', '流行|女包', '200', '200', '2020-05-14 16:36:46.740147', '100');
 --- 详细页设计灵感
+UPDATE `shopping`.`shop_goods` SET `descr` = '<div class=\"b1\"><h4>摇滚女神的热情似火</h4>此款衣服的最大亮点在于三套式穿法 ，外套，马甲，连衣裙 无论是成套还是单穿都十分有个性，加上上面大面积红色的运用，结合军装感的基本，在女子妖娆中，体现出飒爽英姿。</div>' WHERE (`id` = '1');
 UPDATE `shopping`.`shop_goods` SET `descr` = '<div class=\"b1\"><h4>摇滚女神的热情似火</h4>此款衣服的最大亮点在于三套式穿法 ，外套，马甲，连衣裙 无论是成套还是单穿都十分有个性，加上上面大面积红色的运用，结合军装感的基本，在女子妖娆中，体现出飒爽英姿。</div>' WHERE (`id` = '2');
 UPDATE `shopping`.`shop_goods` SET `descr` = '<div class=\"b1\"><h4>摇滚女神的热情似火</h4>此款衣服的最大亮点在于三套式穿法 ，外套，马甲，连衣裙 无论是成套还是单穿都十分有个性，加上上面大面积红色的运用，结合军装感的基本，在女子妖娆中，体现出飒爽英姿。</div>' WHERE (`id` = '3');
 

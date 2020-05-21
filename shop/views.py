@@ -2,13 +2,14 @@ from django.shortcuts import render
 from .models import Goods, User, GoodsType, address, OrderInfo, Order
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
 import json
 import datetime
 
 
 # Create your views here.
 def index(request):
-    if not request.session.get('user', None):
+    if request.session.get('user', None):
         # 最为流行的商品 轮播图的商品
         popular_goods = Goods.objects.filter(popular=100)
         # 页面第二列放一些 打折中商品
@@ -17,6 +18,8 @@ def index(request):
         good_types_one = GoodsType.objects.filter(type_level=1)
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
+        return render(request, 'shop/index.html',
+                      {'goods': popular_goods, 'discount': discount_goods})
     else:
         user = request.session.get('user')
         # 最为流行的商品 轮播图的商品
@@ -27,8 +30,7 @@ def index(request):
         good_types_one = GoodsType.objects.filter(type_level=1)
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
-        ## render(request, 'shop/index.html', {'user': user, 'good': popular_goods, 'discount': discount_goods})
-    return render(request, 'shop/index.html', {'username': user, 'goods': popular_goods, 'discount': discount_goods})
+        return render(request, 'shop/index.html', {'username': user, 'goods': popular_goods, 'discount': discount_goods})
 
 
 def login(request):
@@ -64,6 +66,24 @@ def goods_list(request):
     type = request.GET.get('type')
     good_detail = Goods.objects.filter(good_type=type)
 
+    # 将数据按照规定每页显示 10 条, 进行分割
+    paginator = Paginator(good_detail, 10)
+    if request.method == "GET":
+        # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+        page = request.GET.get('page')
+        try:
+            good_detail = paginator.page(page)
+        # todo: 注意捕获异常
+        except PageNotAnInteger:
+            # 如果请求的页数不是整数, 返回第一页。
+            good_detail = paginator.page(1)
+        except InvalidPage:
+            # 如果请求的页数不存在, 重定向页面
+            return HttpResponse('找不到页面的内容')
+        except EmptyPage:
+            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+            good_detail = paginator.page(paginator.num_pages)
+
     return render(request, 'shop/goodslist.html', {'details': good_detail})
 
 
@@ -75,8 +95,19 @@ def details(request):
 
 
 def cart(request):
-    print("details")
+    if request.session.get('user', None):
+        print("hello")
+    else:
+        uid = request.session["user"]["user_id"]
+        status = request.GET.get("status", "0")
+        if status == "0":
+            date = Order.objects.filter(uid=uid)
+        else:
+            date = Order.objects.filter(uid=uid, status=status)
+        print(date)
+        return render(request, 'shop/cart.html', {"date": date})
     return render(request, 'shop/cart.html')
+
 
 
 def cart_add(request):
@@ -112,8 +143,7 @@ def cart_del(request):
 
 def cart_delall(request):
     try:
-        del request.session['cart']
-        return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
+        return render(request, 'shop/cart.html')
     except:
         return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
 
@@ -132,7 +162,7 @@ def cart_editnum(request):
 # 确认订单，需要的参数有，商品id列表，发送的参数有，用户地址和订单商品列表
 def myorder(request):
     if request.method == "GET":
-        ids = request.GET.get("ids", None)
+        ids = request.GET.get("id", None)
         if ids:
             try:
                 k = ids.split(",")
@@ -164,7 +194,7 @@ def myorder(request):
     elif request.method == "POST":
         aid = request.POST.get("aid", None)
         if aid:
-            uid = request.session["VipUser"]["id"]
+            uid = request.session["user"]["id"]
             good = request.session["order"]
             sun = 0
             num = 0
@@ -199,9 +229,6 @@ def myorder(request):
             return HttpResponse('<script>alert("发生了一个意外！"),location.href=""</script>')
 
 
-# 获取登陆用户的全部地址
-
-# return render(request,'home/myorder.html',{"date":obj})
 def addres_add(request):
     res = request.GET
     obj = address()
@@ -238,7 +265,7 @@ def addres_edit(request):
 
 
 def myorder_list(request):
-    uid = request.session["VipUser"]["id"]
+    uid = request.session["user"]["id"]
     status = request.GET.get("status", "0")
     if status == "0":
         date = Order.objects.filter(uid=uid)
@@ -261,7 +288,7 @@ def myorder_desc(request):
 
 def addres_list(request):
     if request.method == "GET":
-        uid = request.session["VipUser"]["id"]
+        uid = request.session["user"]["id"]
         date = address.objects.filter(uid=uid)
         print(date, "----")
         return render(request, 'home/addres_list.html', {"date": date})

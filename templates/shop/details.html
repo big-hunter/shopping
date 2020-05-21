@@ -1,144 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+{% extends 'shop/public/header.html' %}
+{% block content %}
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>商品细节</title>
 <link href="/static/shop/css/details.css" rel='stylesheet' type='text/css' />
 <link href="/static/shop/css/shopping.css" rel='stylesheet' type='text/css' />
+<link href="/static/shop/script/details.js" rel='stylesheet' type='text/css' />
 <link rel="start icon" href="/static/shop/images/resize_png_new.png"  >
 </head>
 
-<body>
-<!------ start header top------->
-<div class="top1">
-<div class="top-left">
-  <p> <a href="">购物五折啦</a></p>
-</div>
-<div class="top-middle">
-  <marquee id="move">
-  欢迎下载折扣店APP,折扣店随时随地带你购物！
-  </marquee>
-</div>
-<div class="top-right">
-  <ul>
-    <li> <a href="#">最近浏览</a></li>
-    |
-    <li> <a href="#">关于我们</a></li>
-    | <li> <a href="login_user.html">登录</a></li>
-      |
-      <li> <a href="register.html">注册</a></li>
-  </ul>
-</div>
-<!------ end header top-------> 
-<br />
-<br />
-<!------start header logo-------> 
-<div class="header1">
-  <div id="logo"><a title="折扣社" href="index.html"><img src="/static/shop/images/logo.png" alt="折扣店logo" /></a>  </div>
-  <div class="search">
-    <form action="#" method="post" id="sitesearch">
-      <fieldset>
-        <input type="text" value="搜索一下" onfocus="this.value=(this.value=='搜索一下)? '' : this.value ;" />
-        <input type="image" src="/static/shop/images/search.png" id="search" alt="搜索一下" />
-      </fieldset>
-    </form>
-  </div>
-  
-  <div class="icon1"> <a href=""><img  class="img1" src="/static/shop/images/love.png"  title="收藏"/> </a> </div>
-  <div class="icon2"><a href=""> <img  class="img1"  src="/static/shop/images/bag.png" title="购物车" /> </a> </div>
-  <div class="icon3"> <a  class="register_user" href="/register" target="_blank">注册账户&gt;</a> </div>
-</div>
-<!------end header logo-------> 
-
-<!--------start header menu--------->
-<div class="header-menu">
-  <ul>
-    <li><a class="a1" href="">首页</a> </li>
-    <li><a class="a2" href="">今日最新</a> 
-      <ul>
-        <li><a href="">精选女装</a></li>
-        <li><a href="">秋装外套</a></li>
-        <li><a href="">温暖毛衣</a></li>
-        <li><a href="">毛呢外套</a></li>
-        <li><a href="">秋冬外套</a></li>
-        <li><a href="">长袖衬衫</a></li>
-      </ul>
-      </li>
-    <li><a class="a3" href="">女装</a>
-      <ul>
-        <li><a href="">秋款风衣</a></li>
-        <li><a href="">机车皮衣</a></li>
-        <li><a href="">秋款连衣裙</a></li>
-        <li><a href="">小脚裤</a></li>
-        <li><a href="">休闲裤</a></li>
-        <li><a href="">打底裤</a></li>
-      </ul>
-       </li>
-    <li><a class="a4" href="">男装</a>
-      <ul>
-        <li><a href="">个性潮男</a></li>
-        <li><a href="">时尚休闲</a></li>
-        <li><a href="">商务绅士</a></li>
-        <li><a href="">休闲衬衫</a></li>
-        <li><a href="">西服套装</a></li>
-        <li><a href="">直筒西裤</a></li>
-      </ul>
-    </li>
-    <li><a class="a5" href="">儿童服饰</a>
-      <ul>
-        <li><a href="">毛衣|针织衫</a></li>
-        <li><a href="">儿童男装</a></li>
-        <li><a href="">儿童女装</a></li>
-        <li><a href="">表演服饰</a></li>
-        <li><a href="">亲子装</a></li>
-        <li><a href="">休闲套装</a></li>
-      </ul>
-    </li>
-    <li><a class="a6" href="">男包|女包</a>
-      <ul>
-        <li><a href="">秋新款</a></li>
-        <li><a href="">单肩包</a></li>
-        <li><a href="">斜挎包</a></li>
-        <li><a href="">手提包</a></li>
-        <li><a href="">大牌包</a></li>
-        <li><a href="">钱包</a></li>
-      </ul>
-    </li>
-    <li><a class="a7" href="">潮流前线</a>
-      <ul>
-        <li><a href="">珠宝首饰</a></li>
-        <li><a href="">时尚饰品</a></li>
-        <li><a href="">品质手表</a></li>
-        <li><a href="">眼镜配饰</a></li>
-        <li><a href="">男人饰品</a></li>
-        <li><a href="">原创饰品</a></li>
-      </ul>
-    </li>
-    <li><a class="a8" href="">大牌领先看</a>
-      <ul>
-        <li><a href=""> CHANEL</a></li>
-        <li><a href=""> PARADA</a></li>
-        <li> <a href=""> GUCCI</a></li>
-        <li> <a href=""> HERMES</a></li>
-        <li><a href=""> Armani</a></li>
-        <li> <a href=""> Versace</a></li>
-      </ul>
-    </li>
-    <li><a class="a9" href="">今日折扣</a>
-      <ul>
-     <li><a href=""> 香奈儿8折</a></li>
-        <li><a href=""> 普拉达7折</a></li>
-        <li> <a href=""> 古驰5折</a></li>
-        <li> <a href="">爱马仕9折</a></li>
-        <li><a href=""> 阿玛尼8折</a></li>
-        <li> <a href="">范思哲9折</a></li>
-      </ul>
-    </li>
-  </ul>
-</div>
-
-<!--------end header menu---------> 
-<!-------start content left------->
 <div class="menu">
   <div class="menu-left">
     <div class="menu-A1">
@@ -181,8 +51,12 @@
           XXXL[185]
         </form>
         <br />
+        <input id = 'productId' type="text" value={{detail.id}} style="display:none">
       </div>
-      <div class="menu-a5"> <a href="/cart?{{detail.id}}">立刻购买</a></div>
+      <div class="menu-a5">
+       <button id ="J_btnAddCart" >加入购物车</button>
+        <a href="/cart/delall?{{detail.id}}">立刻购买</a>
+      </div>
     </div>
     <br />
     <br />
@@ -193,18 +67,83 @@
         {% endautoescape %}
     </div>
     <div class="menu-C">
-      <div     class="b"> 商品细节 </div>
-      <div class="c1"><img src="/static/shop/images/pic2.jpg"  width="160px" height="180px"/></div>
-      <div class="c2">斯巴奴 2014秋装新品 男装外套 休闲拼接立领夹克外套男 3051A<br />
-        <br />
-        ①欧美时尚棒球领型、修身拉链款！<br />
-        <br />
-        ②35%奢华羊毛触感、撞色拼接面料尽显时尚！ </div>
-      <div class="c">
-        <div class="c3">
-          <h1>￥799</h1>
+      <div class="b">宝贝评论 </div>
+      <div class="c1">
+              <ul class="select">
+                <li class="is-current">
+                  <label for="reviews-t-all">
+                    <input type="radio" name="J_KgRate_ReviewType" id="reviews-t-all" value="" checked="">
+                    全部
+                  </label>
+                </li>
+                <li data-kg-rate-filter-val="3">
+                  <label for="reviews-t-val3">
+                    <input type="radio" name="J_KgRate_ReviewType" id="reviews-t-val3" value="3">
+                    图片
+                    <span class="tb-tbcr-num">
+                      <span data-kg-rate-stats="pic">(1)</span>
+                    </span>
+                  </label>
+                </li>
+                <li data-kg-rate-filter-val="1">
+                  <label for="reviews-t-val1">
+                    <input type="radio" name="J_KgRate_ReviewType" id="reviews-t-val1" value="1">
+                    好评
+                    <span class="tb-tbcr-num">
+                      <span class="content-regarded" data-kg-rate-stats="good">(38)</span>
+                    </span>
+                  </label>
+                </li>
+                <li data-kg-rate-filter-val="0">
+                  <label for="reviews-t-val0">
+                    <input type="radio" name="J_KgRate_ReviewType" id="reviews-t-val0" value="0">
+                    中评
+                    <span class="tb-tbcr-num">
+                      <span data-kg-rate-stats="neutral">(0)</span>
+                    </span>
+                  </label>
+                </li>
+                <li data-kg-rate-filter-val="-1">
+                  <label for="reviews-t-val-1">
+                    <input type="radio" name="J_KgRate_ReviewType" id="reviews-t-val-1" value="-1">
+                    差评
+                    <span class="tb-tbcr-num">
+                      <span data-kg-rate-stats="bad">(1)</span>
+                    </span>
+                  </label>
+                </li>
+              </ul>
+              <div>
+              <ul class="comment">
+                <li id="review" class="kg-rate-ct-review-item" tabindex="0">
+                   <div class="from-whom">
+                     <img class="avatar" src="//img.alicdn.com/tps/i3/TB1yeWeIFXXXXX5XFXXuAZJYXXX-210-210.png">
+                      <div>8***光（匿名）</div>
+                      <img src="//assets.alicdn.com/sys/common/icon/rank_s/b_red_5.gif?t=20111027">
+                   </div>
+                   <div class="review-details">
+                   <div class="tb-rev-item " data-id="1079498631322">
+                   <div class="J_KgRate_ReviewContent tb-tbcr-content ">
+              T恤质量很差，掉色严重，尺码也不标准，宝贝介绍说欧版号偏大，来货以后根本不一样，懒得退货，也不是纯棉，和介绍的根本不是一回事
+            </div>
+                   <div class="tb-rev-item-media">
+            </div>
+                    <div class="tb-r-act-bar">
+                      <div class="tb-r-info">
+                        <span class="tb-r-date">2020年04月01日 18:06</span>颜色：宝蓝色[32s精棉polo]&nbsp;&nbsp;尺码：男款S
+                      </div>
+                      <ul class="tb-rev-actions">
+                        <li class="tb-rev-action">
+                          <span class="tb-r-action-btn" title="有 0 人认为此评论有用" data-act="markuseful" data-val="1079498631322">有用</span>
+                          <span class="J_KgRate_UsefulNum tb-tbcr-num">(0)</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                 </div>
+                </li>
+              </ul>
         </div>
-        <div class="c4"><a href="">加入购物车</a></div>
       </div>
       <div class="menu-D">
         <div     class="b"> 商品细节 </div>
@@ -220,105 +159,26 @@
           </div>
           <div class="c4"><a href="">加入购物车</a></div>
         </div>
+        <div class="menu-D">
+        <div     class="b"> 商品细节 </div>
+          <div class="c1"><img src="/static/shop/images/pic2.jpg"  width="160px" height="180px"/></div>
+            <div class="c2">斯巴奴 2014秋装新品 男装外套 休闲拼接立领夹克外套男 3051A<br />
+              <br />
+              ①欧美时尚棒球领型、修身拉链款！<br />
+              <br />
+              ②35%奢华羊毛触感、撞色拼接面料尽显时尚！ </div>
+            <div class="c">
+              <div class="c3">
+                <h1>￥799</h1>
+              </div>
+              <div class="c4"><a href="">加入购物车</a></div>
+            </div>
+        </div>
       </div>
     </div>
-    <!-------end content left-------> 
-    <!-------start content right------->
-    
-    <div class="menu-right">
-      <div class="menu1">
-        <ul>
-          <li>
-            <h4>商品分类</h4>
-          </li>
-          <li><a href="">本季流行</a></li>
-          <li><a href="">女装</a></li>
-          <li><a href="">男装</a></li>
-          <li><a href="">今日大牌</a></li>
-          <li><a href="">今日最热</a></li>
-          <li><a href="">今日折扣</a></li>
-          </li>
-        </ul>
-      </div>
-      <div class="menu2">
-        <h4> 选择你喜欢的风格：</h4>
-        <form>
-          <input type="checkbox" name="风格" value="color 1" />
-          <a href=""> 清新风格</a><br />
-          <input type="checkbox" name="风格" value="color2" />
-          <a href=""> 田园风格</a><br />
-          <input type="checkbox" name="风格" value="color3" />
-          <a href=""> 绅士风格</a><br />
-          <input type="checkbox" name="风格" value="color4" />
-          <a href=""> 乡村风格</a><br />
-          <input type="checkbox" name="风格" value="color5" />
-          <a href=""> 淑女风格</a><br />
-          <input type="checkbox" name="风格" value="color6" />
-          <a href=""> 帅气风格</a><br />
-        </form>
-      </div>
-      <div class="menu2">
-        <h4>选择你喜欢的品牌：</h4>
-        <form>
-          <input type="checkbox" name="品牌" value="color 1" />
-          <a href=""> CHANEL</a><br />
-          <input type="checkbox" name="品牌" value="color2" />
-          <a href=""> PARADA</a><br />
-          <input type="checkbox" name="品牌" value="color3" />
-          <a href=""> GUCCI</a><br />
-          <input type="checkbox" name="品牌" value="color4" />
-          <a href=""> HERMES</a><br />
-          <input type="checkbox" name="品牌" value="color5" />
-          <a href=""> Armani</a><br />
-          <input type="checkbox" name="品牌" value="color6" />
-          <a href=""> Versace</a><br />
-        </form>
-      </div>
-      <div class="menu2">
-        <h4>选择你想要的颜色：</h4>
-        <form>
-          <input type="checkbox" name="颜色" value="color 1" />
-          明黄色<br />
-          <input type="checkbox" name="颜色" value="color2" />
-          湖蓝色<br />
-          <input type="checkbox" name="颜色" value="color3" />
-          浅绿色<br />
-          <input type="checkbox" name="颜色" value="color4" />
-          大红色<br />
-          <input type="checkbox" name="颜色" value="color5" />
-          粉红色<br />
-          <input type="checkbox" name="颜色" value="color6" />
-          橙子色<br />
-          <input type="checkbox" name="颜色" value="color6" />
-          纯白色色<br />
-          <input type="checkbox" name="颜色" value="color6" />
-          深黑色<br />
-        </form>
-      </div>
-      <div class="menu2">
-        <h4>选择折扣数：</h4>
-        <form>
-          <input type="radio" name="颜色" value="color 1" />
-          9折<br />
-          <input type="radio" name="颜色" value="color2" />
-          8折<br />
-          <input type="radio" name="颜色" value="color3" />
-          7折<br />
-          <input type="radio" name="颜色" value="color4" />
-          6折<br />
-          <input type="radio" name="颜色" value="color5" />
-          5折<br />
-          <input type="radio" name="颜色" value="color6" />
-          4折<br />
-          <input type="radio" name="颜色" value="color6" />
-          3折<br />
-        </form>
-      </div>
-    </div>
-    <!-------end content right------->
+{% endblock %}
+
   {% include "shop/public/footer.html" %}
   <div class="footer2">
     <p>Copyright &copy; 2014.Company<i> hill may </i> All rights reserved.</p>
   </div>
-</body>
-</html>

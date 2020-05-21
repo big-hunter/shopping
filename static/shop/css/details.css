@@ -170,3 +170,31 @@
 	width:400px;
 	height:550px;
 	}
+.c1{
+    height: 200px;
+}
+.menu-C .c1 >ul{
+    list-style: none;
+}
+.menu-C .sorting > ul{
+    list-style: none;
+}
+.menu-C .c1 .select >li {
+    width: 150px;
+    display: inline;
+}
+.from-whom {
+    float: left;
+    overflow: hidden;
+    width: 100px;
+    text-align: center;
+    line-height: 1.5
+}
+.from-whom .avatar{
+    width: 40px;
+    height: 40px;
+}
+
+#review{
+    list-style: none;
+}
