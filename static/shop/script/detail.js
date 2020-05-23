@@ -37,11 +37,33 @@ $.ajaxSetup({
         num = 1;
         $.get("/cart/add",
         {"id":id,"num":num},
-        function(date){
-          if(date=="1"){
+        function(data){
+          var obj = $.parseJSON(data)
+          if(obj.rsp== "1"){
             alert('添加成功！')
-            }else{
-             alert('添加失败')
+           }else if(obj.rsp == 3){
+             alert('请先登陆')
+             window.location.href ="/login"
+            }
+        })
+    })
+
+    $("#buy").bind("click",function(){
+        var id = $("#productId").val()
+        $.get("/myorder",
+        {"id":id},
+        function(data){
+          var obj = $.parseJSON(data)
+          if(obj.rsp== "1"){
+            alert('添加成功！')
+            window.location.href ="/cart/delall"
+           }else if(obj.rsp == 2){
+                alert('请添加收货地址')
+                window.location.href ="/addres/list"
+           }
+           else if(obj.rsp == 3){
+             alert("商品订单生成失败！")
+             window.location.href ="/details?id="+id
             }
         })
     })

@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^cart/editnum/', views.cart_editnum, name='cart_editnum'),
     url(r'^myorder/$', views.myorder, name='myorder'),
     url(r'^addres/add/', views.addres_add, name="addres_add"),
+    url(r'^addres/list/$', views.addres_list, name="addres_list"),
     url(r'^addres/edit/$', views.addres_edit, name="addres_edit"),
     url(r'^myorder/list/$', views.myorder_list, name="myorder_list"),
     url(r'^myorder/desc/$', views.myorder_desc, name="myorder_desc"),

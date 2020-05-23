@@ -94,10 +94,10 @@ def details(request):
 
 
 def cart(request):
-    if request.session.get('user', None):
+    if request.session.get('shoppingUser', None):
         print("hello")
     else:
-        uid = request.session["user"]["user_id"]
+        uid = request.session["shoppingUser"]["user_id"]
         status = request.GET.get("status", "0")
         if status == "0":
             date = Order.objects.filter(uid=uid)
@@ -124,7 +124,8 @@ def cart_add(request):
         date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": num}
         request.session['cart'] = date
     print(request.session['cart'])
-    return HttpResponse(1)
+    response = {"rsp": 1}
+    return HttpResponse(json.dumps(response))
 
 
 def cart_del(request):
@@ -176,13 +177,16 @@ def myorder(request):
                     del request.session['cart'][x]
                     date.append(g)
                 request.session["order"] = order
-                request.session["cart"] = request.session["cart"]
                 # print(request.session["order"])
-                obj = address.objects.filter(uid=request.session["shoppingUser"]["id"])
-                return render(request, 'shop/myorder.html', {"date": obj, "res": date})
-            except:
-                return HttpResponse('<script>alert("商品订单生成失败！");location.href="/cart/"</script>')
-
+                obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
+                if len(obj) == 0:
+                    response = {"rsp": 2}
+                else:
+                    response = {"rsp": 1, "date": obj[0], "res": date}
+                return HttpResponse(json.dumps(response))
+            except Exception as e:
+                response = {"rsp": 3}
+                return HttpResponse(json.dumps(response))
         else:
             o = request.session.get("order", None)
             if o:
@@ -194,7 +198,7 @@ def myorder(request):
     elif request.method == "POST":
         aid = request.POST.get("aid", None)
         if aid:
-            uid = request.session["user"]["id"]
+            uid = request.session["shoppingUser"]["userid"]
             good = request.session["order"]
             sun = 0
             num = 0
@@ -232,7 +236,7 @@ def myorder(request):
 def addres_add(request):
     res = request.GET
     obj = address()
-    obj.uid = User.objects.get(id=request.session['shoppingUser']['id'])
+    obj.uid = User.objects.get(user_id=request.session['shoppingUser']['userid'])
     obj.name = res.get("name")
     obj.phone = res.get("phone")
     obj.addres = res.get("addres")
@@ -265,7 +269,7 @@ def addres_edit(request):
 
 
 def myorder_list(request):
-    uid = request.session["user"]["id"]
+    uid = request.session["s"]["id"]
     status = request.GET.get("status", "0")
     if status == "0":
         date = Order.objects.filter(uid=uid)
@@ -288,10 +292,10 @@ def myorder_desc(request):
 
 def addres_list(request):
     if request.method == "GET":
-        uid = request.session["user"]["id"]
+        uid = request.session["shoppingUser"]["userid"]
         date = address.objects.filter(uid=uid)
         print(date, "----")
-        return render(request, 'home/addres_list.html', {"date": date})
+        return render(request, 'shop/addres_list.html', {"date": date})
     elif request.method == "POST":
         aid = request.POST["id"]
         print(aid)
