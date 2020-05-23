@@ -53,14 +53,11 @@
 	text-align: center;
 }
 .menu-a5 >button{
-    display: block;
+    background-color: #FC3;
+    color: white;
     width: 100px;
     height: 30px;
-    line-height: 30px;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 5px;
+    border: none;
 }
 .menu-a5 a {
 	display:block;

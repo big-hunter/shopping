@@ -9,7 +9,7 @@ import datetime
 
 # Create your views here.
 def index(request):
-    if request.session.get('user', None):
+    if request.session.get('shoppingUser') is None:
         # 最为流行的商品 轮播图的商品
         popular_goods = Goods.objects.filter(popular=100)
         # 页面第二列放一些 打折中商品
@@ -21,7 +21,7 @@ def index(request):
         return render(request, 'shop/index.html',
                       {'goods': popular_goods, 'discount': discount_goods})
     else:
-        user = request.session.get('user')
+        user = request.session.get('shoppingUser')
         # 最为流行的商品 轮播图的商品
         popular_goods = Goods.objects.filter(popular=100)
         # 页面第二列放一些 打折中商品
@@ -30,7 +30,7 @@ def index(request):
         good_types_one = GoodsType.objects.filter(type_level=1)
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
-        return render(request, 'shop/index.html', {'username': user, 'goods': popular_goods, 'discount': discount_goods})
+        return render(request, 'shop/index.html', {'user': user, 'goods': popular_goods, 'discount': discount_goods})
 
 
 def login(request):
@@ -39,7 +39,7 @@ def login(request):
         user = User.objects.filter(username=user_info.get("username"))
         if check_password(user_info.get('password'), user[0].password):
             response = {"responseCode": 200, 'username': user[0].username}
-            request.session['user'] = {"username": user[0].username,
+            request.session['shoppingUser'] = {"username": user[0].username,
                                        "userid": user[0].user_id,
                                        "status": user[0].status}
             return HttpResponse(json.dumps(response), content_type="application/json")
@@ -73,7 +73,6 @@ def goods_list(request):
         page = request.GET.get('page')
         try:
             good_detail = paginator.page(page)
-        # todo: 注意捕获异常
         except PageNotAnInteger:
             # 如果请求的页数不是整数, 返回第一页。
             good_detail = paginator.page(1)
@@ -143,7 +142,9 @@ def cart_del(request):
 
 def cart_delall(request):
     try:
-        return render(request, 'shop/cart.html')
+        id = request.GET['id']
+        date = request.session['cart']
+        return render(request, 'shop/myorder.html')
     except:
         return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
 
@@ -174,12 +175,11 @@ def myorder(request):
                     g.num = order[x]["num"]
                     del request.session['cart'][x]
                     date.append(g)
-                # print(date)
                 request.session["order"] = order
                 request.session["cart"] = request.session["cart"]
                 # print(request.session["order"])
-                obj = address.objects.filter(uid=request.session["VipUser"]["id"])
-                return render(request, 'home/myorder.html', {"date": obj, "res": date})
+                obj = address.objects.filter(uid=request.session["shoppingUser"]["id"])
+                return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             except:
                 return HttpResponse('<script>alert("商品订单生成失败！");location.href="/cart/"</script>')
 
@@ -187,8 +187,8 @@ def myorder(request):
             o = request.session.get("order", None)
             if o:
                 date = request.session.get("order", None)
-                obj = address.objects.filter(uid=request.session["VipUser"]["id"])
-                return render(request, 'home/myorder.html', {"date": obj, "res": date})
+                obj = address.objects.filter(uid=request.session["shoppingUser"]["id"])
+                return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             else:
                 return HttpResponse('<script>alert("商品获取失败！");location.href="/cart/"</script>')
     elif request.method == "POST":
@@ -224,7 +224,7 @@ def myorder(request):
                 o.save()
             good = []
             request.session["order"] = good
-            return render(request, "home/buy.html", {"date": obj})
+            return render(request, "shop/buy.html", {"date": obj})
         else:
             return HttpResponse('<script>alert("发生了一个意外！"),location.href=""</script>')
 
@@ -232,7 +232,7 @@ def myorder(request):
 def addres_add(request):
     res = request.GET
     obj = address()
-    obj.uid = User.objects.get(id=request.session['VipUser']['id'])
+    obj.uid = User.objects.get(id=request.session['shoppingUser']['id'])
     obj.name = res.get("name")
     obj.phone = res.get("phone")
     obj.addres = res.get("addres")

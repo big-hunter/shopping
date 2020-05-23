@@ -16,7 +16,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-$("body > div.top1 > div.top-right > ul > li:nth-child(3) > a").text("username")
 
 })
 

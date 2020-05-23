@@ -41,8 +41,8 @@
         <li> <a href="#">关于我们</a></li>
         |
         <li>
-          {%if user == None%}
-          <a href="/login" target="_blank">登录</a></li>
+          {% if user  %}
+          <a data-model="login" href="/login" target="_blank">登录</a></li>
           {% else %}
            <a href="#">{{ user.username }}</a></li>
           {% endif %}
@@ -99,11 +99,11 @@
       </li>
       <li><a class="a6" href="">男包|女包</a>
         <ul>
-          <li><a href="/goodslist?type= 28">秋新款</a></li>
-          <li><a href="/goodslist?type= 29">单肩包</a></li>
-          <li><a href="/goodslist?type= 30">斜挎包</a></li>
-          <li><a href="/goodslist?type= 31">手提包</a></li>
-          <li><a href="/goodslist?type= 32">大牌包</a></li>
+          <li><a href="/goodslist?type=28">秋新款</a></li>
+          <li><a href="/goodslist?type=29">单肩包</a></li>
+          <li><a href="/goodslist?type=30">斜挎包</a></li>
+          <li><a href="/goodslist?type=31">手提包</a></li>
+          <li><a href="/goodslist?type=32">大牌包</a></li>
         </ul>
       </li>
       <li><a class="a7" href="">潮流前线</a>
@@ -118,8 +118,8 @@
       </li>
       <li><a class="a8" href="">大牌领先看</a>
         <ul>
-          <li> <a href="/goodslist?brand=1 ">CHANEL</a></li>
-          <li> <a href="/goodslist?brand=2 ">PARADA</a></li>
+          <li> <a href="/goodslist?brand=1">CHANEL</a></li>
+          <li> <a href="/goodslist?brand=2">PARADA</a></li>
           <li> <a href="/goodslist?brand=3">GUCCI</a></li>
           <li> <a href="/goodslist?brand=4">HERMES</a></li>
           <li> <a href="/goodslist?brand=5">Armani</a></li>

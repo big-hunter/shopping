@@ -115,20 +115,22 @@
           <a href="">价格从低到高</a>
           </p>
       </div>
-      {% for good in details %}
-        <div class="picture">
-          <span>同款推荐：</span>
-          <a href="/details?id={{good.id}}">
-            <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />{{ good.gname }}<br />
-            <h5 style="color:#F66">限时优惠￥{{ good.price }}</h5>
-            <div class="mask">
-              <div class="info">
-                <a href="/details?id={{good.id}}"> Quick View</a>
+      <div class="items">
+        {% for good in details %}
+          <div class="picture">
+            <span>同款推荐：</span>
+            <a href="/details?id={{good.id}}">
+              <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />{{ good.gname }}<br />
+              <h5 style="color:#F66">限时优惠￥{{ good.price }}</h5>
+              <div class="mask">
+                <div class="info">
+                  <a href="/details?id={{good.id}}"> Quick View</a>
+                </div>
               </div>
+            </a>
             </div>
-          </a>
-          </div>
-      {% endfor %}
+        {% endfor %}
+        </div>
 <!--        <div class="picture">
           <a href="">
             <img src="/static/shop/images/w1.jpg"  />女神的新衣娜娜同款<br />
@@ -200,7 +202,7 @@
                                 <div class="info">Quick View</div>
                             </div></a>
         </div>-->
-            <div id="pages" class="text-center" >
+            <div id="pages" class="page text-center" >
         <nav>
             <ul class="pagination">
                 <li class="step-links">
