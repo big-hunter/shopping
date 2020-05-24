@@ -56,7 +56,7 @@ $.ajaxSetup({
           var obj = $.parseJSON(data)
           if(obj.rsp== "1"){
             alert('添加成功！')
-            window.location.href ="/cart/delall"
+            window.location.href ="/cart/details"
            }else if(obj.rsp == 2){
                 alert('请添加收货地址')
                 window.location.href ="/addres/list"

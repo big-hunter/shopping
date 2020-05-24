@@ -1,0 +1,48 @@
+{% extends 'shop/public/header.html' %}
+{% block content %}
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/cart.css">
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/cart-app.css">
+
+	<!-- 导航 -->
+	<br><br><br>
+    <br>
+    <br>
+    <br>
+	<div class="container center-block" style="margin-bottom: 200px">
+	<div class="navbar-left">
+						<ol class="breadcrumb">
+							<li >购物车</li>
+							<li>确认订单</li>
+							<li  class="active">在线支付</li>
+							<li>完成 </li>
+						</ol>
+					</div>
+  		<div style="padding: 50px 0"></div>
+  		<div class="col-md-6 col-md-offset-2" style="margin-bottom: 10px">
+  			<h3>商品订单：</h3>
+  		</div>
+  		<div class="col-md-6 col-md-offset-3">
+
+	  		<table class="table table-condensed">
+				<tr>
+					<td><h4>订单编号: {{ date.id }}</h4></td>
+				</tr>
+				<tr>
+					<td><h4>商品数量： {{ date.totalnum }}</h4></td>
+				</tr>
+				<tr>
+					<td><h4>商品数量： {{ date.totalprice }}</h4></td>
+				</tr>
+
+			</table>
+		</div>
+		<div class="col-md-1 col-md-offset-8">
+			<a href="{% url 'myorder_list' %}" type="button" class="btn btn-primary butt">确认支付</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(".butt").click(function(){
+			alert("支付成功！即将跳转～～")
+		})
+	</script>
+{% endblock %}

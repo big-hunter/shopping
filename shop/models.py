@@ -15,6 +15,7 @@ class User(models.Model):
     sex = models.CharField(max_length=50)
     age = models.IntegerField(default=0)
     status = models.IntegerField(default=0)
+    pic = models.CharField(max_length=100, default='/static/shop/images/header/default.jpg')
     add_time = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
 

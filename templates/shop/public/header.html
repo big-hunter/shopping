@@ -42,10 +42,12 @@
         |
         <li>
           {% if user is None  %}
-          <a data-model="login" href="/login" target="_blank">登录</a></li>
+            <a data-model="login" href="/login" target="_blank">登录</a></li>
           {% else %}
-           <a href="#">{{ user.username }}</a></li>
+            <a href="#">{{ user.username }}</a></li>
           {% endif %}
+              |
+        <li> <a href="/personal" target="_blank">个人信息</a></li>
         |
         <li> <a href="/register" target="_blank">注册</a></li>
       </ul>

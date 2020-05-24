@@ -1,20 +1,19 @@
-{% extends 'home/public/base.html' %}
+{% extends 'shop/public/header.html' %}
 {% block link %}
-	<link rel="stylesheet" type="text/css" href="/static/home/css/order.css">
-	<link rel="stylesheet" type="text/css" href="/static/home/css/order-app.css">
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/order.css">
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/order-app.css">
 {% endblock %}
-{% block con %}
+{% block content %}
  <!-- 主内容区域 -->
     <div class="mainbody order">
 		<div class="container">
-			<!-- 面包屑导航 -->
 			<div class="crumbs col-xs-12 col-sm-12">
 				<ol class="breadcrumb">
-					<li class="hidden-xs hidden-sm"><a href="index.html">首页</a></li>
-					<li class="hidden-xs hidden-sm"><a href="member.html">我的商城</a></li>
+					<li class="hidden-xs hidden-sm"><a href="/">首页</a></li>
+					<li class="hidden-xs hidden-sm"><a href="/">shopping</a></li>
 					<li class="active">我的订单</li>
 				</ol>
-			</div><!-- 面包屑导航 E-->
+			</div><
 			
 			<div class="main clearfix">
 				<!-- 左侧导航 -->
@@ -73,7 +72,7 @@
 													<div class="shop j-shop j-amLight">
 														<div class="item b-t clearfix j-item j-iamMain">
 															<a class="productDetail nameWidth col-xs-4 col-sm-4" href="#" target="_blank">
-																<img src="{{ v.gid.picname }}" class="f-fl">
+																<img src="{{ v.gid.pic_path }}" class="f-fl">
 															</a>
 															<div class="describe f-fl col-xs-8 col-sm-8">
 																<div class="vertic clearfix">

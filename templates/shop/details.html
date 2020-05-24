@@ -56,7 +56,10 @@
         <button id ="J_btnAddCart" >加入购物车</button>
       </div>
       <div class="menu-a5"  style="margin-top: 8px;">
-        <button id="buy">立刻购买</button>
+       <form action="/myorder/" method="GET">
+            <input type="text" style="display:none" name="id" value="{{detail.id}}"/>
+            <input type="submit" value="立刻购买">
+       </form>
       </div>
     </div>
     <br />

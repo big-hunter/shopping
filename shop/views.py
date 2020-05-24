@@ -19,7 +19,7 @@ def index(request):
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
         return render(request, 'shop/index.html',
-                      {'goods': popular_goods, 'discount': discount_goods})
+                      {'user': None, 'goods': popular_goods, 'discount': discount_goods})
     else:
         user = request.session.get('shoppingUser')
         # 最为流行的商品 轮播图的商品
@@ -39,9 +39,10 @@ def login(request):
         user = User.objects.filter(username=user_info.get("username"))
         if check_password(user_info.get('password'), user[0].password):
             response = {"responseCode": 200, 'username': user[0].username}
-            request.session['shoppingUser'] = {"username": user[0].username,
-                                       "userid": user[0].user_id,
-                                       "status": user[0].status}
+            request.session['shoppingUser'] = {
+                                               "username": user[0].username,
+                                               "userid": user[0].user_id,
+                                               "status": user[0].status}
             return HttpResponse(json.dumps(response), content_type="application/json")
         else:
             response = {"responseCode": 400, "error": "密码错误"}
@@ -93,6 +94,48 @@ def details(request):
     return render(request, 'shop/details.html', {"detail": good_detail[0]})
 
 
+def personal(request):
+    try:
+        id = request.session['shoppingUser']['userid']
+        print(id)
+        obj = User.objects.get(user_id=id)
+        return render(request, 'shop/personal_info.html', {"date": obj})
+    except Exception as e:
+        print(e)
+        return HttpResponse('<script>alert("请先登陆！");location.href="/login/"</script>')
+
+
+def user_edit(request):
+    if request.method == "GET":
+        uid = request.session["shoppingUser"]["userid"]
+        date = User.objects.get(user_id=uid)
+        return render(request, 'shop/user_edit.html', {"date": date})
+    elif request.method == "POST":
+        uid = request.session["shoppingUser"]["userid"]
+        update_status = picsave(request)
+        print(update_status)
+        if update_status == 101:
+            return HttpResponse(
+                '<script>alert("上传失败,错误代码101,文件格式不正确!请选择以下的文件格式:jpg,png,gif,ico");location.href="/user/edit"</script>')
+        elif update_status == 102:
+            return HttpResponse('<script>alert("上传失败,错误代码102,请检查网络连接,或者稍后进行上传!");location.href="/user/edit"</script>')
+        elif update_status == 103:
+            res = request.POST
+            obj = User.objects.get(user_id=uid)
+            obj.username = res['username']
+            obj.phone = res['phone']
+            obj.save()
+            return HttpResponse('<script>alert("上传成功,跳转到个人信息中心");location.href="/personal"</script>')
+        else:
+            res = request.POST
+            obj = User.objects.get(user_id=uid)
+            obj.username = res['username']
+            obj.phone = res['phone']
+            obj.pic = update_status
+            obj.save()
+            return HttpResponse('<script>alert("上传成功,跳转到个人信息中心");location.href="/personal"</script>')
+
+
 def cart(request):
     if request.session.get('shoppingUser', None):
         print("hello")
@@ -108,7 +151,6 @@ def cart(request):
     return render(request, 'shop/cart.html')
 
 
-
 def cart_add(request):
     rid = request.GET['id']
     num = request.GET['num']
@@ -121,7 +163,7 @@ def cart_add(request):
         request.session['cart'] = date
     else:
         date = cart
-        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": num}
+        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": int(num)}
         request.session['cart'] = date
     print(request.session['cart'])
     response = {"rsp": 1}
@@ -141,10 +183,12 @@ def cart_del(request):
     return HttpResponse(res)
 
 
-def cart_delall(request):
+def cart_details(request):
+    # res  -- goods
+    # date --address
     try:
-       # id = request.GET['id']
-       # date = request.session['cart']
+        # id = request.GET['id']
+        # date = request.session['cart']
         return render(request, 'shop/myorder.html')
     except:
         return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
@@ -173,28 +217,24 @@ def myorder(request):
                 for x in k:
                     order[x] = request.session['cart'][x]
                     good = Goods.objects.get(id=x)
-                    good.num = order[x]["num"]
+                    good.num = int(order[x]["num"])
                     del request.session['cart'][x]
                     date.append(good)
                 request.session["order"] = order
                 print(request.session["order"])
                 obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 if len(obj) == 0:
-                    response = {"rsp": 2}
+                    return HttpResponse('<script> alert("请添加收货地址");location.href="/addres/list/"</script>')
                 else:
-                   # add_info = {"address": obj[0].addres, "name":obj[0].name, "phone": obj[0].phone, "status": obj[0].status}
-                   # request.session["shoppingUser"]["add_info"] = add_info
-                   # request.session["shoppingUser"].update({"goods": date})
-                   response = {"rsp": 1}
-                return HttpResponse(json.dumps(response))
+                    return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             except Exception as e:
-                response = {"rsp": 3}
-                return HttpResponse(json.dumps(response))
+                print(e)
+                return HttpResponse('<script>alert("商品订单生成失败！");location.href="/details?id="+'+ids+'</script>')
         else:
             o = request.session.get("order", None)
             if o:
                 date = request.session.get("order", None)
-                obj = address.objects.filter(uid=request.session["shoppingUser"]["id"])
+                obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             else:
                 return HttpResponse('<script>alert("商品获取失败！");location.href="/cart/"</script>')
@@ -212,7 +252,7 @@ def myorder(request):
                 sun += s
                 num += int(n)
             obj = Order()
-            obj.uid = User.objects.get(id=uid)
+            obj.uid = User.objects.get(user_id=uid)
             obj.aid = address.objects.get(id=aid)
             obj.totalprice = sun
             obj.totalnum = num
@@ -260,7 +300,7 @@ def addres_edit(request):
     if request.method == "GET":
         aid = request.GET["id"]
         date = address.objects.get(id=aid)
-        return render(request, "home/addres_edit.html", {"res": date})
+        return render(request, "shop/addres_edit.html", {"res": date})
     elif request.method == "POST":
         res = request.POST
         obj = address.objects.get(id=res["id"])
@@ -272,15 +312,17 @@ def addres_edit(request):
 
 
 def myorder_list(request):
-    uid = request.session["s"]["id"]
-    status = request.GET.get("status", "0")
+    # uid = request.session["s"]["id"]
+    # status = request.GET.get("status", "0")
+    uid = request.session["shoppingUser"]["userid"]
+    status = request.GET.get("status")
     if status == "0":
         date = Order.objects.filter(uid=uid)
     else:
         date = Order.objects.filter(uid=uid, status=status)
     print(date)
 
-    return render(request, "home/myorder_list.html", {"date": date})
+    return render(request, "shop/myorder_list.html", {"date": date})
 
 
 def myorder_desc(request):
@@ -303,6 +345,32 @@ def addres_list(request):
         aid = request.POST["id"]
         print(aid)
         obj = address.objects.get(id=aid)
-        del obj
         print(obj)
+        del obj
         return HttpResponse(1)
+
+
+# 图片上传封装函数
+def picsave(request):
+    import time,  random
+    f = request.FILES
+    if f:
+        now = str(time.time()).split('.')[0]
+        num = str(random.randrange(0, 10000))
+        houzui = request.FILES['file'].name.split('.')[-1]
+        print(houzui)
+        arr = ['jpg', 'png', 'gif', 'ico']
+        if not houzui in arr:
+            return 101
+        else:
+            try:
+                with open('./static/shop/images/header/' + now + num + '.' + houzui, 'wb+') as fs:
+                    for chunk in f['file'].chunks():
+                        fs.write(chunk)
+                        fs.close()
+                        return '/static/shop/images/header/' + now + num + '.' + houzui
+            except Exception as e:
+                print(e)
+                return 102
+    else:
+        return 103
