@@ -143,8 +143,8 @@ def cart_del(request):
 
 def cart_delall(request):
     try:
-        id = request.GET['id']
-        date = request.session['cart']
+       # id = request.GET['id']
+       # date = request.session['cart']
         return render(request, 'shop/myorder.html')
     except:
         return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
@@ -172,17 +172,20 @@ def myorder(request):
                 date = []
                 for x in k:
                     order[x] = request.session['cart'][x]
-                    g = Goods.objects.get(id=x)
-                    g.num = order[x]["num"]
+                    good = Goods.objects.get(id=x)
+                    good.num = order[x]["num"]
                     del request.session['cart'][x]
-                    date.append(g)
+                    date.append(good)
                 request.session["order"] = order
-                # print(request.session["order"])
+                print(request.session["order"])
                 obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 if len(obj) == 0:
                     response = {"rsp": 2}
                 else:
-                    response = {"rsp": 1, "date": obj[0], "res": date}
+                   # add_info = {"address": obj[0].addres, "name":obj[0].name, "phone": obj[0].phone, "status": obj[0].status}
+                   # request.session["shoppingUser"]["add_info"] = add_info
+                   # request.session["shoppingUser"].update({"goods": date})
+                   response = {"rsp": 1}
                 return HttpResponse(json.dumps(response))
             except Exception as e:
                 response = {"rsp": 3}

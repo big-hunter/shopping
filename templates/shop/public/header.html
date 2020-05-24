@@ -41,7 +41,7 @@
         <li> <a href="#">关于我们</a></li>
         |
         <li>
-          {% if user  %}
+          {% if user is None  %}
           <a data-model="login" href="/login" target="_blank">登录</a></li>
           {% else %}
            <a href="#">{{ user.username }}</a></li>

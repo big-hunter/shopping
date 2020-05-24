@@ -1,8 +1,10 @@
 {% extends 'shop/public/header.html' %}
-<link rel="stylesheet" type="text/css" href="/static/public/css/cart.css">
-<link rel="stylesheet" type="text/css" href="/static/public/css/cart-app.css">
+{% block content %}
+<header>
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/cart.css">
+	<link rel="stylesheet" type="text/css" href="/static/shop/css/cart-app.css">
+</header>
 
-{% block con %}
 <body class="cart-app">
     <!-- 导航 -->
     <div class="layout-header" id="scroll-wrap">
@@ -10,13 +12,10 @@
 			<div class="container clearfix">
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<div class="layout-header-logo navbar-left">
-						<a target="_blank" href="./index.html" class="layout-header-logo-link">
-							<img src="/static/home//img/logo.png">
-						</a>
 					</div>
 					<div class="navbar-left">
 						<ol class="breadcrumb">
-							<li >gou</li>
+							<li >购物车</li>
 							<li class="active">确认订单</li>
 							<li>在线支付</li>
 							<li>完成 </li>
@@ -29,10 +28,10 @@
     <!-- 导航 E-->
     <br>
 	<div class="row">
-		<div class="col-md-1 col-md-offset-2" >
+		<div class="col-md-2 col-md-offset-2" >
 			<h4>收货地址：</h4>
 		</div>
-		<div class="col-md-1 col-md-offset-6">
+		<div class="col-md-2 col-md-offset-6">
 			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 			  添加地址+
 			</button>
@@ -105,7 +104,7 @@
     </div>
     <hr>
     <div class="row">
-		<div class="col-md-1 col-md-offset-2" >
+		<div class="col-md-2 col-md-offset-2" >
 			<h4>订单确认：</h4>
 
 		</div>

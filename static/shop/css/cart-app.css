@@ -1,3 +1,12 @@
+.container{
+    border: none;
+}
+#scroll-wrap .container{
+	position: relative;
+	width: auto;
+	height: auto;
+}
+
 @media (max-width: 768px){
 	.cart-col-name .cart-product-price{
 		display:block;

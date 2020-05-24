@@ -52,7 +52,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web.urls'
-
+SESSION_COOKIE_AGE = 1209600  # Session的cookie失效日期（2周）（默认）
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 清空session 关闭浏览器 firefox and chrome 用不了唉
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,7 +71,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'web.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
