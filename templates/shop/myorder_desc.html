@@ -1,4 +1,4 @@
-{% extends 'home/public/base.html' %}
+{% extends 'shop/public/header.html' %}
 {% block link %}
 	<link rel="stylesheet" type="text/css" href="/static/shop/css/order.css">
 	<link rel="stylesheet" type="text/css" href="/static/shop/css/order-app.css">
@@ -40,7 +40,7 @@
 				    <hr>
 			       <div class="row">
 				    	<div class="col-md-1" style="height: 100px;line-height: 100px">
-				    		<img src="{{ x.gid.picname }}" style="width: 80px;height: 80px;">
+				    		<img src="{{ x.gid.pic_path }}" style="width: 80px;height: 80px;">
 				    	</div>
 				    	<div class="col-md-1"></div>
 				    	<div class="col-md-1" style="height: 100px;line-height: 100px">{{ x.gid.gname }}</div>
@@ -90,4 +90,13 @@
 		</div>	
 	</div>
     <!-- 主内容区域 E-->
+<script>
+
+	 $('.header1').hide()
+	//top1
+	$('.top1').hide()
+	//header-menu
+	$('.header-menu').hide()
+
+</script>
 {% endblock %}

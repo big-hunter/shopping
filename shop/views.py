@@ -40,9 +40,9 @@ def login(request):
         if check_password(user_info.get('password'), user[0].password):
             response = {"responseCode": 200, 'username': user[0].username}
             request.session['shoppingUser'] = {
-                                               "username": user[0].username,
-                                               "userid": user[0].user_id,
-                                               "status": user[0].status}
+                "username": user[0].username,
+                "userid": user[0].user_id,
+                "status": user[0].status}
             return HttpResponse(json.dumps(response), content_type="application/json")
         else:
             response = {"responseCode": 400, "error": "密码错误"}
@@ -229,7 +229,7 @@ def myorder(request):
                     return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             except Exception as e:
                 print(e)
-                return HttpResponse('<script>alert("商品订单生成失败！");location.href="/details?id="+'+ids+'</script>')
+                return HttpResponse('<script>alert("商品订单生成失败！");location.href="/details?id="+' + ids + '</script>')
         else:
             o = request.session.get("order", None)
             if o:
@@ -274,6 +274,16 @@ def myorder(request):
             return render(request, "shop/buy.html", {"date": obj})
         else:
             return HttpResponse('<script>alert("发生了一个意外！"),location.href=""</script>')
+
+
+def myorder_desc(request):
+    oid = request.GET.get("oid", None)
+    print(oid)
+    if oid:
+        date = Order.objects.get(id=oid)
+        return render(request, "shop/myorder_desc.html", {"date": date})
+    else:
+        return HttpResponse('<script>alert("sorry!您查询的订单不存在！")</script>')
 
 
 def addres_add(request):
@@ -330,7 +340,7 @@ def myorder_desc(request):
     print(oid)
     if oid:
         date = Order.objects.get(id=oid)
-        return render(request, "home/myorder_desc.html", {"date": date})
+        return render(request, "shop/myorder_desc.html", {"date": date})
     else:
         return HttpResponse('<script>alert("sorry!您查询的订单不存在！")</script>')
 
@@ -352,7 +362,7 @@ def addres_list(request):
 
 # 图片上传封装函数
 def picsave(request):
-    import time,  random
+    import time, random
     f = request.FILES
     if f:
         now = str(time.time()).split('.')[0]
