@@ -58,14 +58,14 @@
       <div class="menu-a5"  style="margin-top: 8px;">
        <form action="/myorder/" method="GET">
             <input type="text" style="display:none" name="id" value="{{detail.id}}"/>
-            <input type="submit" value="立刻购买">
+            <input type="submit" style="background-color: #FC3;color: white;border: none" value="立刻购买">
        </form>
       </div>
     </div>
     <br />
     <br />
     <div class="menu-B">
-      <div     class="b">设计灵感 </div>
+      <div  class="b">设计灵感 </div>
         {% autoescape off %}
               {{detail.descr}}
         {% endautoescape %}

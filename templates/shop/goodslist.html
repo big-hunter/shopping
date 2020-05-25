@@ -119,7 +119,7 @@
         {% for good in details %}
           <div class="picture">
             <span>同款推荐：</span>
-            <a href="/details?id={{good.id}}">
+            <a data-click="{{good.id}}" href="/details?id={{good.id}}">
               <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />{{ good.gname }}<br />
               <h5 style="color:#F66">限时优惠￥{{ good.price }}</h5>
               <div class="mask">

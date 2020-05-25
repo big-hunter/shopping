@@ -47,8 +47,8 @@ class ItemBasedCF:
     def Recommend(self,user, K=3, N=10):
         rank = dict() #记录user的推荐物品（没有历史行为的物品）和兴趣程度
         action_item = self.train[user]     #用户user购买的物品和兴趣评分r_ui
-        for item,score in action_item.items():
-            for j,wj in sorted(self.W[item].items(),key=lambda x:x[1],reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
+        for item, score in action_item.items():
+            for j, wj in sorted(self.W[item].items(),key=lambda x:x[1],reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
                 if j in action_item.keys():  #如果物品j已经购买过，则不进行推荐
                     continue
                 rank.setdefault(j, 0)
@@ -68,10 +68,10 @@ if __name__ == '__main__':
                      'B,1,b',  'B,1,c', 'B,1,e',
                      'C,1,c',  'C,1,d',
                      'D,1,b',  'D,1,c', 'D,1,d',
-                     'E,1,a', 'E,1,d']
-    #声明一个ItemBased推荐的对象
+                     'E,1,a',  'E,1,d']
+    # 声明一个ItemBased推荐的对象
     Item = ItemBasedCF(uid_score_bid)
     Item.ItemSimilarity()
     recommedDic = Item.Recommend("A")  #计算给用户A的推荐列表
     for k, v in recommedDic.items():
-        print(k, "\t",v  )
+        print(k, "\t", v)

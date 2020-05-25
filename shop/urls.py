@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.login, name='login'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^loginout/$', views.loginout, name='loginout'),
     url(r'^goodslist/$', views.goods_list, name='goods_list'),
     url(r'^details/$', views.details, name='details'),
     url(r'^cart/$', views.cart, name='cart'),
@@ -37,4 +38,8 @@ urlpatterns = [
     url(r'^addres/edit/$', views.addres_edit, name="addres_edit"),
     url(r'^myorder/list/$', views.myorder_list, name="myorder_list"),
     url(r'^myorder/desc/$', views.myorder_desc, name="myorder_desc"),
+
+    # click record
+    url(r'^good/click/$', views.good_click, name="good_click"),
+
 ]

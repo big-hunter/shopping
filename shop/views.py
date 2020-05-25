@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Goods, User, GoodsType, address, OrderInfo, Order
+from .models import Goods, User, GoodsType, address, OrderInfo, Order, UserAction
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
@@ -18,8 +18,7 @@ def index(request):
         good_types_one = GoodsType.objects.filter(type_level=1)
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
-        return render(request, 'shop/index.html',
-                      {'user': None, 'goods': popular_goods, 'discount': discount_goods})
+        return render(request, 'shop/index.html', {'goods': popular_goods, 'discount': discount_goods})
     else:
         user = request.session.get('shoppingUser')
         # 最为流行的商品 轮播图的商品
@@ -30,7 +29,9 @@ def index(request):
         good_types_one = GoodsType.objects.filter(type_level=1)
         for type in good_types_one:
             sub_type.append(GoodsType.objects.filter(paren_id=type.id))
-        return render(request, 'shop/index.html', {'user': user, 'goods': popular_goods, 'discount': discount_goods})
+        res = render(request, 'shop/index.html', {'goods': popular_goods, 'discount': discount_goods})
+        res.set_cookie("username", value=user['username'])
+        return res
 
 
 def login(request):
@@ -62,6 +63,12 @@ def register(request):
         return HttpResponse(json.dumps(response), content_type="application/json")
     return render(request, 'shop/register.html')
 
+
+def loginout(request):
+    del request.session['shoppingUser']
+    response = HttpResponse('<script>alert("退出成功！");location.href="/"</script>')
+    response.delete_cookie('username')
+    return response
 
 def goods_list(request):
     type = request.GET.get('type')
@@ -116,7 +123,8 @@ def user_edit(request):
         print(update_status)
         if update_status == 101:
             return HttpResponse(
-                '<script>alert("上传失败,错误代码101,文件格式不正确!请选择以下的文件格式:jpg,png,gif,ico");location.href="/user/edit"</script>')
+                '<script>alert("上传失败,错误代码101,文件格式不正确!请选择以下的文件格式:jpg,png,gif,ico");'
+                'location.href="/user/edit"</script>')
         elif update_status == 102:
             return HttpResponse('<script>alert("上传失败,错误代码102,请检查网络连接,或者稍后进行上传!");location.href="/user/edit"</script>')
         elif update_status == 103:
@@ -322,8 +330,6 @@ def addres_edit(request):
 
 
 def myorder_list(request):
-    # uid = request.session["s"]["id"]
-    # status = request.GET.get("status", "0")
     uid = request.session["shoppingUser"]["userid"]
     status = request.GET.get("status")
     if status == "0":
@@ -359,6 +365,16 @@ def addres_list(request):
         del obj
         return HttpResponse(1)
 
+
+def good_click(request):
+    if request.session.get('shoppingUser') is None:
+        print("aymous user")
+    else:
+        id = request.GET.get("id")
+        useraction = UserAction()
+        useraction.user_id = request.session.get('shoppingUser')
+        # good_id : brows_ime, good_id : brows_ime
+        # useraction.browsed_good =
 
 # 图片上传封装函数
 def picsave(request):
