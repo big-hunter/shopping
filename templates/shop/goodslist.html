@@ -118,14 +118,13 @@
       <div class="items">
         {% for good in details %}
           <div class="picture">
-            <span>同款推荐：</span>
-            <a data-click="{{good.id}}" href="/details?id={{good.id}}">
-              <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />{{ good.gname }}<br />
-              <h5 style="color:#F66">限时优惠￥{{ good.price }}</h5>
+              <a data-click="true" name="{{good.id}}" href="/details?id={{good.id}}">
+              <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />
+              <h5 style="color:#F66">{{ good.gname }} 限时优惠￥{{ good.price }}</h5>
               <div class="mask">
-                <div class="info">
-                  <a href="/details?id={{good.id}}"> Quick View</a>
-                </div>
+                  <div class="info">
+                    <a> Quick View</a>
+                  </div>
               </div>
             </a>
             </div>
@@ -207,7 +206,7 @@
             <ul class="pagination">
                 <li class="step-links">
                 {% if details.has_previous %}
-                    <a class='active' href="?page={{ details.previous_page_number }}">上一页</a>
+                    <a class='active' href="?type={{type}}&&page={{ details.previous_page_number }}">上一页</a>
                 {% else %}
                      <a class='active' href="#">上一页</a>
                 {% endif %}
@@ -215,7 +214,7 @@
                 <span class="current">
                     第 {{ details.number }} 页 ,总 {{ details.paginator.num_pages }}页 </span>
                 {% if details.has_next %}
-                    <a class='active' href="?page={{ details.next_page_number }}">下一页</a>
+                    <a class='active' href="?type={{ type }}&&page={{ details.next_page_number }}">下一页</a>
                 {% else %}
                      <a class='active' href="#">下一页</a>
                 {% endif %}

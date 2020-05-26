@@ -74,8 +74,8 @@ def goods_list(request):
     type = request.GET.get('type')
     good_detail = Goods.objects.filter(good_type=type)
 
-    # 将数据按照规定每页显示 10 条, 进行分割
-    paginator = Paginator(good_detail, 10)
+    # 将数据按照规定每页显示 12 条, 进行分割
+    paginator = Paginator(good_detail, 12)
     if request.method == "GET":
         # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
         page = request.GET.get('page')
@@ -91,7 +91,7 @@ def goods_list(request):
             # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
             good_detail = paginator.page(paginator.num_pages)
 
-    return render(request, 'shop/goodslist.html', {'details': good_detail})
+    return render(request, 'shop/goodslist.html', {'type': type, 'details': good_detail})
 
 
 def details(request):
@@ -367,14 +367,30 @@ def addres_list(request):
 
 
 def good_click(request):
-    if request.session.get('shoppingUser') is None:
-        print("aymous user")
-    else:
-        id = request.GET.get("id")
-        useraction = UserAction()
-        useraction.user_id = request.session.get('shoppingUser')
-        # good_id : brows_ime, good_id : brows_ime
-        # useraction.browsed_good =
+    try:
+        if request.session.get('shoppingUser') is None:
+            print("anonymous user not tagging")
+        else:
+            good_id = request.GET.get("id")
+            user_id = request.session.get('shoppingUser')
+            actions = UserAction.objects.get(user_id)
+            if len(actions) == 0:
+                user_action = UserAction()
+                user_action.user_id = user_id
+            else:
+                # good_id : brows_time, good_id : brows_time
+                act = actions[0].browsed_good
+                act_list = act.split(",")
+                for item in act_list:
+                    it = item.split(":")
+                    if it[0] == good_id:
+                        it[1] = str(int(it[1]) + 1)
+                    else:
+                        act = act + good_id + ":" + str(1) + ","
+            actions[0].browsed_good = act
+    except Exception as e:
+        print(e)
+
 
 # 图片上传封装函数
 def picsave(request):

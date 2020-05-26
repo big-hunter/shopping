@@ -97,7 +97,18 @@ function getCookie(name) {
     }
     return cookieValue;
    }
-
+function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+        var csrftoken = getCookie('csrftoken');
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    })
 function getQueryVariable(variable)
 {
        var query = window.location.search.substring(1);
@@ -116,6 +127,25 @@ $(document).ready(function(){
        $("[data-model='login']").text(username)
        $("[data-model='login']").attr("href","#")
    }
+   // data-click="{{good.id}}"
+   $("[data-click]").bind("click",function(){
+        var _this = this
+        var id = _this.name
+        $.ajax({
+            type:"GET",
+            url:"/good/click", // 请求路径
+            dataType:"json",
+            data:{"good_id": id },
+            success : function(data){
+                console.log(data)
+
+            },
+            error: function(){
+                console.log("console error")
+            }
+        })
+
+   })
 })
 
 /*-----------注册界面提醒end-----------*/

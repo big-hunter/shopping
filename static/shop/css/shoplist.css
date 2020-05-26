@@ -41,12 +41,14 @@
 	text-decoration: none;
 	line-height: 27px;
 }
-
+.menu-top{
+    margin-top: 15px;
+}
 .menu-right {
 	width: 930px;
 	height: 1200px;
 	float: left;
-	margin-left: 367px;
+	margin-left: 300px;
 	margin-top: -1200px;
 }
 .menu-right p {
@@ -54,11 +56,11 @@
 }
 .picture {
 	width: 200px;
-	height: 300px;
+	height: 340px;
 	display: inline-block;
-	padding: 35px 8px;
 	text-align: center;
 	font-size: 14px;
+    margin: 5px 10px;
 }
 .picture a
 {
@@ -81,7 +83,5 @@
 	margin-left: 134px;
 	margin-top: -145px;
 }
-.page{
-    margin-top: 90px;
-}
+
 /*------end content1------*/
