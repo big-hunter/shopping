@@ -25,10 +25,10 @@ class UserAction(models.Model):
     user_id = models.AutoField(primary_key=True, unique=True)
     username = models.CharField(max_length=50)
     browsed_good = models.CharField(max_length=300)  # 最近浏览过的商品
-    last_time_buy = models.DateField()
+    last_time_buy = models.DateField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
-    login_out = models.DateTimeField()   # login login_out 时间
-    buy_sum = models.DecimalField(max_digits=10, decimal_places=2)
+    login_out = models.DateTimeField(auto_now_add=True)  # login login_out 时间
+    buy_sum = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
 '''

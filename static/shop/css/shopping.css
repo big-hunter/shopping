@@ -198,6 +198,7 @@ a.register_user:hover {
 }
 .header-menu ul li:hover ul {
 	visibility: visible;
+    transition: width .5s, left .5s;
 }
 .header-menu a {
 	display: block;
