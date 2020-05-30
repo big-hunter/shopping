@@ -67,4 +67,24 @@ $.ajaxSetup({
             }
         })
     })
+    var full_img = $("#full").attr("src") //04
+    var path_arr = full_img.split("/")
+    var last_str = path_arr[path_arr.length -1]
+
+    //03 back
+    var back_path  = last_str.replace("4_full","3_back")
+    var back_related = full_img.replace(last_str, back_path)
+    console.log(back_related)
+    $("#back").attr("src",back_related)
+
+    //02 side
+    var side_path  = last_str.replace("4_full","2_side")
+    var side_related = full_img.replace(last_str, side_path)
+    console.log(side_related)
+    $("#side").attr("src",side_related)
+
+    var additional_path  = last_str.replace("4_full","7_additional")
+    var additional_related = full_img.replace(last_str, additional_path)
+    console.log(additional_related)
+    $("#additonal").attr("src",additional_related)//07 additonal.jpg
 })

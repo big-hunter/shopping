@@ -73,7 +73,12 @@ def loginout(request):
 def goods_list(request):
     type = request.GET.get('type')
     good_detail = Goods.objects.filter(good_type=type)
-
+    if request.GET.get('price') is not None:
+        good_detail = good_detail.order_by("-price")
+    if request.GET.get('discount') is not None:
+        good_detail = good_detail.order_by("-discount")
+    if request.GET.get('popar') is not None:
+        good_detail = good_detail.order_by("-popular")
     # 将数据按照规定每页显示 12 条, 进行分割
     paginator = Paginator(good_detail, 12)
     if request.method == "GET":
@@ -91,6 +96,54 @@ def goods_list(request):
             # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
             good_detail = paginator.page(paginator.num_pages)
 
+    return render(request, 'shop/goodslist.html', {'type': type, 'details': good_detail})
+
+
+def goods_list_discount(request):
+    discount = request.GET.get("discount")
+    good_detail = Goods.objects.filter(discount=discount)
+    if request.GET.get('brand') is not None:
+        brand = request.GET.get("brand")
+        good_detail = Goods.objects.filter(discount=discount, brand=brand)
+    # 将数据按照规定每页显示 12 条, 进行分割
+    paginator = Paginator(good_detail, 12)
+    if request.method == "GET":
+        # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+        page = request.GET.get('page')
+        try:
+            good_detail = paginator.page(page)
+        except PageNotAnInteger:
+            # 如果请求的页数不是整数, 返回第一页。
+            good_detail = paginator.page(1)
+        except InvalidPage:
+            # 如果请求的页数不存在, 重定向页面
+            return HttpResponse('找不到页面的内容')
+        except EmptyPage:
+            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+            good_detail = paginator.page(paginator.num_pages)
+
+    return render(request, 'shop/goodslist.html', {'type': type, 'details': good_detail})
+
+
+def goods_list_popular(request):
+    popular = request.GET.get("popular")
+    good_detail = Goods.objects.filter(popular=popular)
+    # 将数据按照规定每页显示 12 条, 进行分割
+    paginator = Paginator(good_detail, 12)
+    if request.method == "GET":
+        # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+        page = request.GET.get('page')
+        try:
+            good_detail = paginator.page(page)
+        except PageNotAnInteger:
+            # 如果请求的页数不是整数, 返回第一页。
+            good_detail = paginator.page(1)
+        except InvalidPage:
+            # 如果请求的页数不存在, 重定向页面
+            return HttpResponse('找不到页面的内容')
+        except EmptyPage:
+            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+            good_detail = paginator.page(paginator.num_pages)
     return render(request, 'shop/goodslist.html', {'type': type, 'details': good_detail})
 
 
@@ -182,7 +235,7 @@ def cart_del(request):
     uid = request.GET['id']
     res = request.session.get('cart', None)
     try:
-        del request.session['cart'][uid]
+        del res['cart'][uid]
         date = request.session['cart']
         request.session['cart'] = date
         res = 0
@@ -367,30 +420,40 @@ def addres_list(request):
 
 
 def good_click(request):
-    try:
-        if request.session.get('shoppingUser') is None:
-            print("anonymous user not tagging")
-        else:
-            good_id = request.GET.get("id")
-            user_id = request.session.get('shoppingUser')
-            actions = UserAction.objects.get(user_id)
-            if len(actions) == 0:
-                user_action = UserAction()
-                user_action.user_id = user_id
+    if request.is_ajax() and request.method == 'GET':
+        try:
+            if request.session.get('shoppingUser') is None:
+                print("anonymous user not tagging")
+                response = {"rsp": 1}
+                return HttpResponse(json.dumps(response))
             else:
-                # good_id : brows_time, good_id : brows_time
-                act = actions[0].browsed_good
-                act_list = act.split(",")
-                for item in act_list:
-                    it = item.split(":")
-                    if it[0] == good_id:
-                        it[1] = str(int(it[1]) + 1)
-                    else:
-                        act = act + good_id + ":" + str(1) + ","
-            actions[0].browsed_good = act
-    except Exception as e:
-        print(e)
-
+                good_id = request.GET.get("good_id")
+                user_id = request.session.get('shoppingUser')['userid']
+                actions = UserAction.objects.filter(user_id=user_id)
+                if len(actions) == 0:
+                    user_action = UserAction()
+                    user_action.user_id = user_id
+                    user_action.browsed_good = str(good_id) + ":" + str(1) + ","
+                    user_action.save()
+                    print("action add")
+                else:
+                    act = actions[0].browsed_good # good_id : brows_time, good_id : brows_time
+                    act_list = act.split(",")
+                    if len(act_list) > 0:
+                        for i in range(0,len(act_list)-1):
+                            it = act_list[i].split(":")
+                            if it[0] == good_id:
+                                it[1] = str(int(it[1]) + 1)
+                                act = it[0] + ":" + it[1]+","
+                            else:
+                                act = act + good_id + ":" + str(1) + ","
+                                print("add at save model")
+                        actions[0].browsed_good = act
+                        actions[0].save()
+        except Exception as e:
+            print(e)
+        response = {"rsp": 2}
+        return HttpResponse(json.dumps(response))
 
 # 图片上传封装函数
 def picsave(request):

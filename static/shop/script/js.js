@@ -130,15 +130,17 @@ $(document).ready(function(){
    // data-click="{{good.id}}"
    $("[data-click]").bind("click",function(){
         var _this = this
-        var id = _this.name
         $.ajax({
             type:"GET",
-            url:"/good/click", // 请求路径
-            dataType:"json",
-            data:{"good_id": id },
+            url:"/good/click/", // 请求路径
+            //async:false,
+            data:{"good_id": String( _this.name) },
             success : function(data){
-                console.log(data)
-
+               if(data.rsp == '1'){
+                  console.log("anonymous")
+               }else{
+                  console.log("clicked")
+               }
             },
             error: function(){
                 console.log("console error")
@@ -146,6 +148,37 @@ $(document).ready(function(){
         })
 
    })
+
+
+    $("#highTolow").bind("click",function(){
+        var type = getQueryVariable("type")
+        var  page = getQueryVariable("page")
+        if (page != undefined || page !=""){
+            window.location.href = "/goodslist/?type="+type+"&&page="+page+"&&price=1"
+        } else{
+            window.location.href = "/goodslist/?type="+type+"&&price=1"
+        }
+    });
+    $("#discount").bind("click",function(){
+        var type = getQueryVariable("type")
+       var  page = getQueryVariable("page")
+         if(page != undefined || page !=""){
+             window.location.href = "/goodslist/?type="+type+"&&page="+page+"&&discount="+discount
+        }
+        else{
+            window.location.href = "/goodslist/?type="+type+"&&price=1"
+        }
+    });
+
+    $("#popar").bind("click",function(){
+        var type = getQueryVariable("type")
+         var  page = getQueryVariable("page")
+        if (page != undefined || page !=""){
+            window.location.href = "/goodslist/?type="+type+"&&page="+page+"&&popar=1"
+        } else{
+           window.location.href = "/goodslist/?type="+type+"&&popar=1"
+        }
+    });
 })
 
 /*-----------注册界面提醒end-----------*/
