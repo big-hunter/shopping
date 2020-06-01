@@ -70,10 +70,10 @@ if __name__ == '__main__':
             print(final)
             read_result.append(final)
             start_id = start_id+1
-   # 可以在控制台粘贴一下 就不用写到文件里了
-   #file_name = "inster.sql"
-   #with open(file_name, 'a',encoding='utf8') as file:
-   #    for line in read_result:
-   #        file.write(line+"\n")
+    # 可以在控制台粘贴一下 就不用写到文件里了
+    file_name = "inster.sql"
+    with open(file_name, 'a', encoding='utf8') as file:
+        for line in read_result:
+            file.write(line+"\n")
 
-   #file.close()
+    file.close()

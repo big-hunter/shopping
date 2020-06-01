@@ -276,12 +276,22 @@ def myorder(request):
                 order = {}
                 date = []
                 for x in k:
-                    order[x] = request.session['cart'][x]
-                    good = Goods.objects.get(id=x)
-                    good.num = int(order[x]["num"])
-                    del request.session['cart'][x]
-                    date.append(good)
-                request.session["order"] = order
+                    user_cart = request.session['cart']
+                    if not user_cart:
+                        user_cart = {x: {"gname": "", "price": 0, "num": 0}}
+                        good = Goods.objects.get(id=x)
+                        good.num = 1
+                        user_cart[x]["price"] = float(good.price)
+                        user_cart[x]["num"] = float(1)
+                        date.append(good)
+                        request.session["order"] = user_cart
+                    else:
+                        order[x] = request.session['cart'][x]
+                        good = Goods.objects.get(id=x)
+                        good.num = int(order[x]["num"])
+                        del request.session['cart'][x]
+                        date.append(good)
+                        request.session["order"] = order
                 print(request.session["order"])
                 obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 if len(obj) == 0:
@@ -292,9 +302,14 @@ def myorder(request):
                 print(e)
                 return HttpResponse('<script>alert("商品订单生成失败！");location.href="/details?id="+' + ids + '</script>')
         else:
+            date = []
             o = request.session.get("order", None)
             if o:
-                date = request.session.get("order", None)
+                order = request.session.get("order", None)
+                for item in order:
+                    good = Goods.objects.get(id=item)
+                    good.num = 1
+                    date.append(good)
                 obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 return render(request, 'shop/myorder.html', {"date": obj, "res": date})
             else:
