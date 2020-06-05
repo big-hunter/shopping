@@ -3,7 +3,7 @@ import math
 
 class ItemBasedCF:
 
-    def __init__(self,train_file):
+    def __init__(self, train_file):
         self.train_file = train_file
         self.readData()
 
@@ -19,9 +19,9 @@ class ItemBasedCF:
     def ItemSimilarity(self):
         C = dict()  # 物品-物品的共现矩阵
         N = dict()  # 物品被多少个不同用户购买
-        for user,items in self.train.items():
+        for user, items in self.train.items():
             for i in items.keys():
-                N.setdefault(i,0)
+                N.setdefault(i, 0)
                 N[i] += 1  # 物品i出现一次就计数加一
                 C.setdefault(i, {})
                 for j in items.keys():
@@ -34,21 +34,21 @@ class ItemBasedCF:
 
         #计算相似度矩阵
         self.W = dict()
-        for i,related_items in C.items():
-            self.W.setdefault(i,{})
-            for j,cij in related_items.items():
-                self.W[i][j] = cij / (math.sqrt(N[i] * N[j]))  #按上述物品相似度公式计算相似度
+        for i, related_items in C.items():
+            self.W.setdefault(i, {})
+            for j, cij in related_items.items():
+                self.W[i][j] = cij / (math.sqrt(N[i] * N[j]))  #物品相似度公式计算相似度
 
         for k, v in self.W.items():
             print(k+':'+str(v))
         return self.W
 
     #给用户user推荐前N个最感兴趣的物品
-    def Recommend(self,user, K=3, N=10):
+    def Recommend(self, user, K=3, N=10):
         rank = dict() #记录user的推荐物品（没有历史行为的物品）和兴趣程度
         action_item = self.train[user]     #用户user购买的物品和兴趣评分r_ui
         for item, score in action_item.items():
-            for j, wj in sorted(self.W[item].items(),key=lambda x:x[1],reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
+            for j, wj in sorted(self.W[item].items(),key=lambda x:x[1], reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
                 if j in action_item.keys():  #如果物品j已经购买过，则不进行推荐
                     continue
                 rank.setdefault(j, 0)
@@ -62,6 +62,14 @@ def saveInObject():
 # 数据库里存一些 用户对物品的兴趣度
 def get_user_score():
     pass
+
+
+def rec_goods(items,user_id):
+    # 声明一个ItemBased推荐的对象
+    Item = ItemBasedCF(items)
+    Item.ItemSimilarity()
+    return  Item.Recommend(user_id)  # 计算给用户A的推荐列表
+
 
 if __name__ == '__main__':
     uid_score_bid = ['A,1,a',  'A,1,b', 'A,1,d',

@@ -87,4 +87,33 @@ $.ajaxSetup({
     var additional_related = full_img.replace(last_str, additional_path)
     console.log(additional_related)
     $("#additonal").attr("src",additional_related)//07 additonal.jpg
+
+    function getQueryVariable(variable)
+    {
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+    }
+
+    var goodid = getQueryVariable("id")
+     // data:JSON.stringify(data)
+    $.ajax({
+        type:"GET",
+        url:"/good/rec/?goodid="+goodid, // 请求路径
+        dataType:"json",
+
+        success : function(data){
+            console.log(data)
+
+        },
+        error: function(){
+              console.log("rec error")
+        }
+    })
+
+
 })

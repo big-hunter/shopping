@@ -220,11 +220,11 @@ def cart_add(request):
     key = cart.keys()
     if rid in key:
         num = int(request.session['cart'][rid]["num"]) + int(num)
-        date = {rid: {"gname": res.gname, "price": int(res.price), "num": num}}
+        date = {rid: {"gname": res.gname, "price": int(res.price), "num": num, "id": res.id}}
         request.session['cart'] = date
     else:
         date = cart
-        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": int(num)}
+        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": int(num),"id":res.id}
         request.session['cart'] = date
     print(request.session['cart'])
     response = {"rsp": 1}
@@ -319,17 +319,19 @@ def myorder(request):
         if aid:
             uid = request.session["shoppingUser"]["userid"]
             good = request.session["order"]
-            sun = 0
-            num = 0
+            sun, num = 0, 0
+            ids = ""
             for x in good:
                 n = good[x]["num"]
                 price = good[x]["price"]
                 s = int(n) * int(price)
                 sun += s
                 num += int(n)
+                ids = x + ","
             obj = Order()
             obj.uid = User.objects.get(user_id=uid)
             obj.aid = address.objects.get(id=aid)
+            obj.goodsId = ids
             obj.totalprice = sun
             obj.totalnum = num
             obj.status = 1  # 未付款
@@ -345,7 +347,6 @@ def myorder(request):
                 o.store -= int(good[x]["num"])
                 o.num += int(good[x]["num"])
                 o.save()
-            good = []
             request.session["order"] = good
             return render(request, "shop/buy.html", {"date": obj})
         else:
@@ -455,7 +456,7 @@ def good_click(request):
                     act = actions[0].browsed_good # good_id : brows_time, good_id : brows_time
                     act_list = act.split(",")
                     if len(act_list) > 0:
-                        for i in range(0,len(act_list)-1):
+                        for i in range(0, len(act_list)-1):
                             it = act_list[i].split(":")
                             if it[0] == good_id:
                                 it[1] = str(int(it[1]) + 1)
@@ -469,6 +470,33 @@ def good_click(request):
             print(e)
         response = {"rsp": 2}
         return HttpResponse(json.dumps(response))
+
+def good_rec(request):
+    rec_goods = []
+    if request.is_ajax() and request.method == 'GET':
+        id = request.GET.get('goodid')
+        good = Goods.objects.filter(id=int(id))
+        if request.session.get('shoppingUser') is None:
+            goods = Goods.objects.filter(good_type=good.good_type)
+            good_one = goods.objects.order_by('popular')
+            good_two = goods.objects.order_by('discount')
+            rec_goods.append(good_one[0])
+            rec_goods.append(good_one[1])
+            rec_goods.append(good_one[2])
+            rec_goods.append(good_two[0])
+            rec_goods.append(good_two[2])
+        else:
+            user_id = request.session.get('shoppingUser')['userid']
+            userOrder = Order.objects.filter(uid=user_id)
+            # 'A,1,a',  'A,1,b', 'A,1,d',
+            for item in userOrder:
+                print(item.goodsId)
+
+# # 过滤一些相似user
+def likely_user(userid):
+    uesr = User.objects.filter(user_id=userid)
+
+
 
 # 图片上传封装函数
 def picsave(request):

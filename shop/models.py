@@ -59,6 +59,7 @@ class GoodsType(models.Model):
 
 
 class Goods(models.Model):
+    id = models.AutoField(primary_key=True)
     good_type = models.CharField(max_length=255)
     gname = models.CharField(max_length=255)
     descr = models.TextField()  # 商品的一些描述 或者 设计灵感
@@ -88,6 +89,7 @@ class address(models.Model):
 class Order(models.Model):
     uid = models.ForeignKey('User', to_field="user_id", on_delete=models.CASCADE)
     aid = models.ForeignKey('address', to_field='id', on_delete=models.CASCADE)
+    goodsId = models.CharField(max_length=2000)
     totalprice = models.FloatField()
     totalnum = models.IntegerField()
     # 1 未付款 2已付款,待发货,3已发货,待收货,4已完成,5已取消
