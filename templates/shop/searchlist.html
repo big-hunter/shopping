@@ -1,0 +1,158 @@
+{% extends 'shop/public/header.html' %}
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>商品列表</title>
+<link href="/static/shop/css/shopping.css" rel='stylesheet' type='text/css' />
+<link href="/static/shop/css/shoplist.css" rel='stylesheet' type='text/css' />
+<link rel="start icon" href="images/resize_png_new.png"  >
+</head>
+
+<hr />
+ {% block content %}
+<!--------content1--------->
+
+<div class="menu">
+    <div class="menu-left">
+      <div class="menu1">
+        <ul>
+          <li>
+            <h4>商品分类</h4>
+          </li>
+          <li><a href="">本季流行</a></li>
+          <li><a href="">女装</a></li>
+          <li><a href="">男装</a></li>
+          <li><a href="">今日大牌</a></li>
+          <li><a href="/goodslist/popluar?popluar=100">今日最热</a></li>
+          <li><a href="/goodslist/discount?discount=0.1">今日折扣</a></li>
+          </li>
+        </ul>
+      </div>
+      <div class="menu2">
+        <form>
+          <h4> 选择你喜欢的风格：</h4>
+          <input type="checkbox" name="风格" value="color 1" />
+          <a href="/goodslist/?type=12"> 清新风格</a><br />
+          <input type="checkbox" name="风格" value="color2" />
+          <a href="/goodslist/?type=13"> 田园风格</a><br />
+          <input type="checkbox" name="风格" value="color3" />
+          <a href="/goodslist/?type=14"> 绅士风格</a><br />
+          <input type="checkbox" name="风格" value="color4" />
+          <a href="/goodslist/?type=15"> 乡村风格</a><br />
+          <input type="checkbox" name="风格" value="color5" />
+          <a href="/goodslist/?type=15"> 淑女风格</a><br />
+          <input type="checkbox" name="风格" value="color6" />
+          <a href="/goodslist/?type=16"> 帅气风格</a><br />
+        </form>
+      </div>
+      <br />
+      <div class="menu2">
+        <form>
+          <h4>选择你喜欢的品牌：</h4>
+          <input type="checkbox" name="品牌" value="color 1" />
+          <a href=""> CHANEL</a><br />
+          <input type="checkbox" name="品牌" value="color2" />
+          <a href=""> PARADA</a><br />
+          <input type="checkbox" name="品牌" value="color3" />
+          <a href=""> GUCCI</a><br />
+          <input type="checkbox" name="品牌" value="color4" />
+          <a href=""> HERMES</a><br />
+          <input type="checkbox" name="品牌" value="color5" />
+          <a href=""> Armani</a><br />
+          <input type="checkbox" name="品牌" value="color6" />
+          <a href=""> Versace</a><br />
+        </form>
+      </div>
+      <br />
+      <div class="menu2">
+        <form>
+          <h4>选择你想要的颜色：</h4>
+          <input type="checkbox" name="颜色" value="color 1" />
+          明黄色<br />
+          <input type="checkbox" name="颜色" value="color2" />
+          湖蓝色<br />
+          <input type="checkbox" name="颜色" value="color3" />
+          浅绿色<br />
+          <input type="checkbox" name="颜色" value="color4" />
+          大红色<br />
+          <input type="checkbox" name="颜色" value="color5" />
+          粉红色<br />
+          <input type="checkbox" name="颜色" value="color6" />
+          橙子色<br />
+          <input type="checkbox" name="颜色" value="color6" />
+          纯白色色<br />
+          <input type="checkbox" name="颜色" value="color6" />
+          深黑色<br />
+        </form>
+      </div>
+      <br />
+      <div class="menu2">
+        <form>
+          <h4>选择折扣数：</h4>
+          <input type="radio" name="颜色" value="color 1" />
+          9折<br />
+          <input type="radio" name="颜色" value="color2" />
+          8折<br />
+          <input type="radio" name="颜色" value="color3" />
+          7折<br />
+          <input type="radio" name="颜色" value="color4" />
+          6折<br />
+          <input type="radio" name="颜色" value="color5" />
+          5折<br />
+          <input type="radio" name="颜色" value="color6" />
+          4折<br />
+          <input type="radio" name="颜色" value="color6" />
+          3折<br />
+        </form>
+      </div>
+    </div>
+    <div class="menu-right">
+      <div class="menu-top">
+        <p>所有商品：47829件
+          分类：
+          <a id = "popar">流行|</a>
+          <a id = "discount">折扣|</a>
+          <a id ="highTolow" >价格从高到低</a>
+          </p>
+      </div>
+      <div class="items">
+        {% for good in details %}
+          <div class="picture">
+              <a data-click="true" name="{{good.id}}" href="/details?id={{good.id}}">
+              <img src="{{good.pic_path}}" style="width: 210px;height: 285px;" />
+              <h5 style="color:#F66">{{ good.gname }} 限时优惠￥{{ good.price }}</h5>
+              <div class="mask">
+                  <div class="info">
+                    <a> Quick View</a>
+                  </div>
+              </div>
+            </a>
+            </div>
+        {% endfor %}
+        </div>
+            <div id="pages" class="page text-center" >
+        <nav>
+            <ul class="pagination">
+                <li class="step-links">
+                {% if details.has_previous %}
+                    <a class='active' href="?name={{name}}&&page={{ details.previous_page_number }}">上一页</a>
+                {% else %}
+                     <a class='active' href="#">上一页</a>
+                {% endif %}
+
+                <span class="current">
+                    第 {{ details.number }} 页 ,总 {{ details.paginator.num_pages }}页 </span>
+                {% if details.has_next %}
+                    <a class='active' href="?name={{name}}&&page={{ details.next_page_number }}">下一页</a>
+                {% else %}
+                     <a class='active' href="#">下一页</a>
+                {% endif %}
+                </li>
+            </ul>
+        </nav>
+      </div>
+      </div>
+    </div>
+</div>
+
+{% include 'shop/public/footer.html' %}
+{% endblock %}

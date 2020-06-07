@@ -43,6 +43,8 @@ urlpatterns = [
 
     # click record
     url(r'^good/click/$', views.good_click, name="good_click"),
-    url(r'^good/rec/$', views.good_rec, name="good_rec")
+    url(r'^good/rec/$', views.good_rec, name="good_rec"),
+    url(r'^search/$', views.search, name="search")
+
 
 ]

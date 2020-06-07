@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Goods, User, GoodsType, address, OrderInfo, Order, UserAction
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.hashers import make_password, check_password
@@ -248,8 +248,8 @@ def cart_details(request):
     # res  -- goods
     # date --address
     try:
-        # id = request.GET['id']
-        # date = request.session['cart']
+        id = request.GET['id']
+        ate = request.session['cart']
         return render(request, 'shop/myorder.html')
     except:
         return HttpResponse('<script>alert("清空购物车成功！");location.href="/cart/"</script>')
@@ -492,10 +492,32 @@ def good_rec(request):
             for item in userOrder:
                 print(item.goodsId)
 
+
 # # 过滤一些相似user
 def likely_user(userid):
     uesr = User.objects.filter(user_id=userid)
 
+
+
+def search(request):
+    # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+    try:
+        name = request.GET.get('name')
+        goods = Goods.objects.filter(gname__contains=name)
+        goods.order_by('price')
+        paginator = Paginator(goods, 12)
+        page = request.GET.get('page')
+        good_detail = paginator.page(page)
+    except PageNotAnInteger:
+        # 如果请求的页数不是整数, 返回第一页。
+        good_detail = paginator.page(1)
+    except InvalidPage:
+        # 如果请求的页数不存在, 重定向页面
+        return HttpResponse('找不到页面的内容')
+    except EmptyPage:
+        # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+        good_detail = paginator.page(paginator.num_pages)
+    return render(request, 'shop/searchlist.html', {'name': name, 'details': good_detail})
 
 
 # 图片上传封装函数

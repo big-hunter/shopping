@@ -179,6 +179,26 @@ $(document).ready(function(){
            window.location.href = "/goodslist/?type="+type+"&&popar=1"
         }
     });
+
+    $("#searchInput").bind("focus",function(){
+
+        console.log("on focus")
+        var value = $("#searchInput").val()
+        if (value == '搜索一下'){
+            $("#searchInput").val("")
+        }else{
+            $("#searchInput").val(value)
+        }
+
+    })
+    $("#search").bind("click",function(){
+        var value = $("#searchInput").val()
+        if (value == '搜索一下'){
+            alert("请输入物品名")
+        }else{
+            window.location = "search?name="+value
+        }
+    })
 })
 
 /*-----------注册界面提醒end-----------*/

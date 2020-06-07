@@ -14,17 +14,15 @@
 <script type="text/javascript" src="/static/shop/script/bootstrap.min.js"></script>
 </head>
 <body>
-
+{% csrf_token %}
 <div>
   <div class="header1">
     <div id="logo"><a href="index.html"> <img src="/static/shop/images/logo.png" alt="折扣店logo"  title="折扣社"/> </a></div>
     <div class="search">
-      <form action="#" method="post" id="sitesearch">
         <fieldset>
-          <input type="text" value="搜索一下" onfocus="this.value=(this.value=='搜索一下)? '' : this.value ;" />
+          <input id="searchInput" type="text" value="搜索一下"/>
           <input type="image" src="/static/shop/images/search.png" id="search" alt="搜索一下" />
         </fieldset>
-      </form>
     </div>
     <div class="icon1"> <a href=""><img  class="img1" src="/static/shop/images/love.png"  title="收藏"/> </a> </div>
     <div class="icon2"><a href=""> <img  class="img1"  src="/static/shop/images/bag.png" title="购物车" /> </a> </div>
