@@ -98,16 +98,23 @@ $.ajaxSetup({
        }
        return(false);
     }
-
     var goodid = getQueryVariable("id")
-     // data:JSON.stringify(data)
     $.ajax({
         type:"GET",
         url:"/good/rec/?goodid="+goodid, // 请求路径
         dataType:"json",
-
         success : function(data){
             console.log(data)
+            if (data.length <4){
+                  for(var i = 0; i < data.length ; i++){
+                    console.log("#rec_img"+String(i))
+                    $("#rec_img"+String(i)).attr('src' ,data[i].pic)
+                  }
+            }else{
+                  for(var i = 0; i <4 ; i++){
+                    $("#rec_img"+String(i)).attr('src' ,data[i].pic)
+                  }
+            }
 
         },
         error: function(){

@@ -64,11 +64,11 @@ def get_user_score():
     pass
 
 
-def rec_goods(items,user_id):
+def rec_goods(items, user_id):
     # 声明一个ItemBased推荐的对象
     Item = ItemBasedCF(items)
     Item.ItemSimilarity()
-    return  Item.Recommend(user_id)  # 计算给用户A的推荐列表
+    return Item.Recommend(user_id)  # 计算给用户A的推荐列表
 
 
 if __name__ == '__main__':

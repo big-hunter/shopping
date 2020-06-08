@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
 from .models import Goods, User, GoodsType, address, OrderInfo, Order, UserAction
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -477,27 +478,38 @@ def good_rec(request):
         id = request.GET.get('goodid')
         good = Goods.objects.filter(id=int(id))
         if request.session.get('shoppingUser') is None:
-            goods = Goods.objects.filter(good_type=good.good_type)
-            good_one = goods.objects.order_by('popular')
-            good_two = goods.objects.order_by('discount')
-            rec_goods.append(good_one[0])
-            rec_goods.append(good_one[1])
-            rec_goods.append(good_one[2])
-            rec_goods.append(good_two[0])
-            rec_goods.append(good_two[2])
+            # 同类中的 流行 和 折扣
+            goods = Goods.objects.filter(good_type=good[0].good_type)
+            good_one = goods.all().order_by('popular')
+            for one in good_one:
+                rec_goods.append(one)
         else:
             user_id = request.session.get('shoppingUser')['userid']
-            userOrder = Order.objects.filter(uid=user_id)
+            # 历史订单
+            likely_user(user_id, id)
             # 'A,1,a',  'A,1,b', 'A,1,d',
-            for item in userOrder:
-                print(item.goodsId)
-
+            print("cao")
+    good_list = []
+    for item in rec_goods:
+        good_list.append({"id": str(item.id), "pic": item.pic_path})
+    return HttpResponse(json.dumps(good_list))
 
 # # 过滤一些相似user
-def likely_user(userid):
-    uesr = User.objects.filter(user_id=userid)
-
-
+def likely_user(user_id,good_id):
+    uid_score_bid = []
+    #uesr = User.objects.filter(user_id=user_id)
+    time_month = datetime.datetime.now() - relativedelta(months=3)
+    userOrder = Order.objects.filter(uid=user_id, addtime__range=(time_month, datetime.datetime.now()))
+    orders = userOrder.all().order_by('addtime')
+    user_browsed = UserAction.objects.filter(user_id=user_id)
+    a_matrix = ''
+    if len(user_browsed) != 0:
+        for item in user_browsed[0].browsed_good.split(','):
+            print(item)
+            info = item.split(':')
+            if str(info[0]) != id:
+               a_matrix = a_matrix + user_id+","+str(info[1])
+        print(a_matrix)
 
 def search(request):
     # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
