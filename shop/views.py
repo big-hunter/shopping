@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
+
+from algorithm.ItemBasedCF import ItemBasedCF
 from .models import Goods, User, GoodsType, address, OrderInfo, Order, UserAction
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.hashers import make_password, check_password
@@ -70,6 +72,7 @@ def loginout(request):
     response = HttpResponse('<script>alert("退出成功！");location.href="/"</script>')
     response.delete_cookie('username')
     return response
+
 
 def goods_list(request):
     type = request.GET.get('type')
@@ -486,30 +489,64 @@ def good_rec(request):
         else:
             user_id = request.session.get('shoppingUser')['userid']
             # 历史订单
-            likely_user(user_id, id)
+            score = user_insert_good(user_id)
+            userids = like_user(user_id, id)
+            for item in userids:
+                score.extend(user_insert_good(item))
+            Item = ItemBasedCF(score)
+            Item.ItemSimilarity()
+            recommedDic = Item.Recommend(user_id)
             # 'A,1,a',  'A,1,b', 'A,1,d',
-            print("cao")
+            for k, v in recommedDic.items():
+                print(k, "\t", v)
     good_list = []
     for item in rec_goods:
         good_list.append({"id": str(item.id), "pic": item.pic_path})
     return HttpResponse(json.dumps(good_list))
 
-# # 过滤一些相似user
-def likely_user(user_id,good_id):
+
+# 买过相同商品 , 性别相同, 年纪相近的users
+def like_user(user_id, good_id):
+    orders = Order.objects.filter(goodsId=good_id)
+    users = []
+    userids = []
+    for item in orders:
+        if item.uid !=user_id:
+            user = User.objects.filter(user_id=item.uid,)
+            users.append(user[0])
+    if len(users) > 0:
+        for item in users:
+            userids.append(item.user_id)
+    return userids
+
+# # user 感兴趣的东西
+def user_insert_good(user_id):
     uid_score_bid = []
-    #uesr = User.objects.filter(user_id=user_id)
     time_month = datetime.datetime.now() - relativedelta(months=3)
     userOrder = Order.objects.filter(uid=user_id, addtime__range=(time_month, datetime.datetime.now()))
     orders = userOrder.all().order_by('addtime')
     user_browsed = UserAction.objects.filter(user_id=user_id)
     a_matrix = ''
+    order_goods = []
+    if(len(orders) !=0):
+        for item in orders:
+            order_goods.append(item.goodsId)
+
     if len(user_browsed) != 0:
-        for item in user_browsed[0].browsed_good.split(','):
-            print(item)
-            info = item.split(':')
+        goods_and_time = user_browsed[0].browsed_good.split(',')
+        for i in range(0, len(goods_and_time)-1):
+            info = goods_and_time[i].split(':')
+            user_browsed_goodId = info[0]
+            user_browsed_time = info[1]
+            if user_browsed_goodId in order_goods:
+                intrest = user_browsed_time * 2 # 购买过的物品兴趣更高
+            else:
+                intrest = info[1]
             if str(info[0]) != id:
-               a_matrix = a_matrix + user_id+","+str(info[1])
+               a_matrix = a_matrix + str(user_id)+","+str(intrest) + "," + user_browsed_goodId
+               uid_score_bid.append(a_matrix)
         print(a_matrix)
+    return uid_score_bid
 
 def search(request):
     # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
