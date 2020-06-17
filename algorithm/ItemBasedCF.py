@@ -48,11 +48,11 @@ class ItemBasedCF:
         rank = dict() #记录user的推荐物品（没有历史行为的物品）和兴趣程度
         action_item = self.train[user]     #用户user购买的物品和兴趣评分r_ui
         for item, score in action_item.items():
-            for j, wj in sorted(self.W[item].items(),key=lambda x:x[1], reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
+            for j, wj in sorted(self.W[item].items(), key=lambda x: x[1], reverse=True)[0:K]:  #使用与物品item最相似的K个物品进行计算
                 if j in action_item.keys():  #如果物品j已经购买过，则不进行推荐
                     continue
                 rank.setdefault(j, 0)
-                rank[j] += score * wj  #如果物品j没有购买过，则累计物品j与item的相似度*兴趣评分，作为user对物品j的兴趣程度
+                rank[j] += score * wj  #如果物品j没有购买过，则累计物品j与item的相似度*兴趣评分，作为 user 对物品j的兴趣程度
         return dict(sorted(rank.items(), key=lambda x:x[1], reverse=True)[0:N])
 
 # 将物品的相似物品 属性存入DB 中

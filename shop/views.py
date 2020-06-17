@@ -481,22 +481,24 @@ def good_rec(request):
         id = request.GET.get('goodid')
         good = Goods.objects.filter(id=int(id))
         if request.session.get('shoppingUser') is None:
-            # 同类中的 流行 和 折扣
+            # 同类中的流行 最流行的商品进行推荐
             goods = Goods.objects.filter(good_type=good[0].good_type)
             good_one = goods.all().order_by('popular')
             for one in good_one:
-                rec_goods.append(one)
+                if one.id != id:  # 排除商品 自己
+                    rec_goods.append(one)
         else:
             user_id = request.session.get('shoppingUser')['userid']
-            # 历史订单
             score = user_insert_good(user_id)
+            # 相似的 users
             userids = like_user(user_id, id)
             for item in userids:
+                # 给相似user 浏览过的 和 买过 的 东西
                 score.extend(user_insert_good(item))
             Item = ItemBasedCF(score)
             Item.ItemSimilarity()
-            recommedDic = Item.Recommend(user_id)
-            # 'A,1,a',  'A,1,b', 'A,1,d',
+            recommedDic = Item.Recommend(str(user_id))
+            # 计算出来 推荐 商品 'A,1,a',  'A,1,b', 'A,1,d',
             for k, v in recommedDic.items():
                 print(k, "\t", v)
     good_list = []
@@ -505,13 +507,13 @@ def good_rec(request):
     return HttpResponse(json.dumps(good_list))
 
 
-# 买过相同商品 , 性别相同, 年纪相近的users
+# 性别相同, 年纪相近的users, 还买过相同商品。
 def like_user(user_id, good_id):
     orders = Order.objects.filter(goodsId=good_id)
     users = []
     userids = []
     for item in orders:
-        if item.uid !=user_id:
+        if item.uid != user_id:
             user = User.objects.filter(user_id=item.uid,)
             users.append(user[0])
     if len(users) > 0:
@@ -522,30 +524,35 @@ def like_user(user_id, good_id):
 # # user 感兴趣的东西
 def user_insert_good(user_id):
     uid_score_bid = []
+    # 获取当前客户3 个月的订单
     time_month = datetime.datetime.now() - relativedelta(months=3)
     userOrder = Order.objects.filter(uid=user_id, addtime__range=(time_month, datetime.datetime.now()))
     orders = userOrder.all().order_by('addtime')
+    # 获取用户最浏览过的商品
     user_browsed = UserAction.objects.filter(user_id=user_id)
-    a_matrix = ''
     order_goods = []
-    if(len(orders) !=0):
+
+    if len(orders) != 0:
         for item in orders:
             order_goods.append(item.goodsId)
 
     if len(user_browsed) != 0:
         goods_and_time = user_browsed[0].browsed_good.split(',')
         for i in range(0, len(goods_and_time)-1):
+            a_matrix = ''
             info = goods_and_time[i].split(':')
             user_browsed_goodId = info[0]
-            user_browsed_time = info[1]
+            user_browsed_time = info[1]  # 浏览过的物品
             if user_browsed_goodId in order_goods:
-                intrest = user_browsed_time * 2 # 购买过的物品兴趣更高
+                intrest = int(user_browsed_time) * 0.5  # 购买过的物品就推荐力度就小一些
             else:
-                intrest = info[1]
+                intrest = int(info[1]) * 2# 想要推荐浏览过的商品
             if str(info[0]) != id:
+                #         用户id                     兴趣score              物品id
                a_matrix = a_matrix + str(user_id)+","+str(intrest) + "," + user_browsed_goodId
                uid_score_bid.append(a_matrix)
-        print(a_matrix)
+        print("用户感兴趣的商品list:")
+        print(uid_score_bid)
     return uid_score_bid
 
 

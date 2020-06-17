@@ -109,10 +109,12 @@ $.ajaxSetup({
                   for(var i = 0; i < data.length ; i++){
                     console.log("#rec_img"+String(i))
                     $("#rec_img"+String(i)).attr('src' ,data[i].pic)
+                    $(".good_item"+String(i)).attr('href' ,"/details/?id="+data[i].id)
                   }
             }else{
                   for(var i = 0; i <4 ; i++){
                     $("#rec_img"+String(i)).attr('src' ,data[i].pic)
+                    $(".good_item"+String(i)).attr('href' ,"/details/?id="+data[i].id)
                   }
             }
 
