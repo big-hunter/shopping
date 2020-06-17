@@ -196,7 +196,7 @@ $(document).ready(function(){
         if (value == '搜索一下'){
             alert("请输入物品名")
         }else{
-            window.location = "search?name="+value
+            window.location = "/search?name="+value
         }
     })
 })

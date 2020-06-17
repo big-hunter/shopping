@@ -548,8 +548,8 @@ def user_insert_good(user_id):
         print(a_matrix)
     return uid_score_bid
 
+
 def search(request):
-    # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
     try:
         name = request.GET.get('name')
         goods = Goods.objects.filter(gname__contains=name)
