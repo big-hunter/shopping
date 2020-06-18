@@ -228,7 +228,7 @@ def cart_add(request):
         request.session['cart'] = date
     else:
         date = cart
-        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": int(num),"id":res.id}
+        date[str(rid)] = {"gname": res.gname, "price": int(res.price), "num": int(num), "id": res.id}
         request.session['cart'] = date
     print(request.session['cart'])
     response = {"rsp": 1}
@@ -282,21 +282,39 @@ def myorder(request):
                 for x in k:
                     user_cart = request.session['cart']
                     if not user_cart:
-                        user_cart = {x: {"gname": "", "price": 0, "num": 0}}
+                        user_cart = {x: {"gname": "", "pic_path": "", "price": 0, "num": 0}}
                         good = Goods.objects.get(id=x)
                         good.num = 1
+                        user_cart[x]["gname"] = good.gname
+                        user_cart[x]["pic_path"] = good.pic_path
                         user_cart[x]["price"] = float(good.price)
                         user_cart[x]["num"] = float(1)
-                        date.append(good)
-                        request.session["order"] = user_cart
                     else:
-                        order[x] = request.session['cart'][x]
-                        good = Goods.objects.get(id=x)
-                        good.num = int(order[x]["num"])
-                        del request.session['cart'][x]
-                        date.append(good)
+                        cart_id = request.session['cart'].keys()
+                        if x not in cart_id:
+                            add_to_cart = {x: {"gname": "", "price": 0, "num": 0}}
+                            good = Goods.objects.get(id=x)
+                            good.num = 1
+                            add_to_cart[x]["gname"] = good.gname
+                            add_to_cart[x]["pic_path"] = good.pic_path
+                            add_to_cart[x]["price"] = float(good.price)
+                            add_to_cart[x]["num"] = float(1)
+                            request.session['cart'].update(add_to_cart)
+                        else:
+                            single_cart = request.session['cart']
+                            good = Goods.objects.get(id=x)
+                            single_cart[x]["gname"] = good.gname
+                            single_cart[x]["pic_path"] = good.pic_path
+                            single_cart[x]["price"] = float(good.price)
+                            single_cart[x]["num"] = float(1)
+                            request.session['cart'].update(single_cart)
+                            # date.append(good)
                         request.session["order"] = order
-                print(request.session["order"])
+                print(request.session["cart"])
+                final_cart = request.session['cart']
+                request.session["order"] = final_cart
+                for key, vaule in final_cart.items():
+                    date.append(vaule)
                 obj = address.objects.filter(uid=request.session["shoppingUser"]["userid"])
                 if len(obj) == 0:
                     return HttpResponse('<script> alert("请添加收货地址");location.href="/addres/list/"</script>')

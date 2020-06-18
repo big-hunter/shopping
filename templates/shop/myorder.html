@@ -136,13 +136,12 @@
 						
 							<tr class="cart-product" id="pro5">
 								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
-									<a href="meilanx.html" class="cart-product-link" target="_blank">
-									
+									<a  class="cart-product-link" >
 										<img src="{{ x.pic_path }}" class="cart-product-img"  style="width: 150px;height: 150px;">
 									</a>
 								</td>
 								<td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
-									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									<a  class="cart-product-link">
 									  <p>{{ x.gname }}</p>
 									</a>
 								</td>
@@ -157,9 +156,7 @@
 									</p>
 								</td>
 								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
-
-									<span class="cart-product-price total"></span>
-									<!-- widthratio x.price 1 x.num .00-->
+									<span class="cart-product-price total">{%widthratio x.price 1 x.num%}.00</span>
 								</td>							
 							</tr>
 						{% endfor %}
